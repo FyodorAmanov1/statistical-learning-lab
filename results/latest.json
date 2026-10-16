@@ -1,0 +1,28 @@
+{
+  "project": "statistical-learning-lab",
+  "seed": 1729,
+  "metrics": {
+    "selected_alpha": 10.0,
+    "validation_mse": {
+      "0.0": 1.0632475547924314,
+      "0.1": 1.0632396067897794,
+      "1.0": 1.0631709803861913,
+      "10.0": 1.0627589946487639,
+      "100.0": 1.0767276638360308
+    },
+    "holdout_mse": 1.391949152385742,
+    "training_mean_baseline_mse": 1.2044389939010804,
+    "train_count": 900,
+    "validation_count": 299,
+    "test_count": 299
+  },
+  "provenance": {
+    "data": "Synthetic AR(1) series with a prescribed coefficient shift",
+    "numpy": "2.2.4"
+  },
+  "limitations": [
+    "Single synthetic series and a single prescribed shift; not a financial forecasting result.",
+    "A one-row gap handles these one-step labels, not arbitrary overlapping targets.",
+    "Repeated model development can overfit a fixed holdout; fresh confirmation is a later milestone."
+  ]
+}

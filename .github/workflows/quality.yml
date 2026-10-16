@@ -1,0 +1,44 @@
+name: Portfolio quality
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: quality-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  quality:
+    name: portfolio-quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/checkout@v4
+        with:
+          repository: FyodorAmanov1/research-portfolio
+          ref: 84bb5fef8a52df171c048d0f8d378afe7ac7b841
+          path: .quality
+          persist-credentials: false
+      - name: Project unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Independent invariants and reproduced metrics
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        shell: bash
+        run: |
+          if [ -n "$BASE_SHA" ]; then
+            python .quality/portfolio_pipeline/quality.py --project . --name statistical-learning-lab --base "$BASE_SHA"
+          else
+            python .quality/portfolio_pipeline/quality.py --project . --name statistical-learning-lab
+          fi
