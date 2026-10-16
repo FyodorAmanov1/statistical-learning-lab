@@ -1,0 +1,54 @@
+name: Portfolio quality
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  quality:
+    name: portfolio-quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - name: Independent numerical checks
+        env:
+          BASE_SHA: ${{ startsWith(github.head_ref, 'research/') && github.event.pull_request.base.sha || '' }}
+        shell: bash
+        run: |
+          if [ -n "$BASE_SHA" ]; then
+            python quality/contract.py --project . --name statistical-learning-lab --base "$BASE_SHA"
+          else
+            python quality/contract.py --project . --name statistical-learning-lab
+          fi
+      - name: Reproduce applied study
+        run: python src/studio.py --check docs/study.json
+      - uses: actions/upload-pages-artifact@v4
+        if: github.event_name != 'pull_request'
+        with:
+          path: docs
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: quality
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
