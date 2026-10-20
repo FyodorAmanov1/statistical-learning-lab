@@ -14,7 +14,7 @@ Predict next-day realized variance from six causal return features. Compare a sm
 
 ### Method
 
-Seed 73: simulated GARCH-like returns. Features at close t: squared return, 5/20-day realized variance, return, 20-day mean absolute return and 5-day mean return. Label: r² at t+1. Shift starts at target day 1450 when enabled.
+Seed 73: Gaussian innovations with v[t]=ω+α r[t−1]²+β v[t−1]. Baseline (ω,α,β)=(0.025,0.10,0.84); from day 1450 the stress case uses (0.12,0.16,0.84), deliberately α+β=1. Features at close t: squared return, 5/20-day variance, return, 20-day mean absolute return and 5-day mean return. Label: r² at t+1.
 
 Training targets <1000; validation 1001–1199 chooses ridge penalty 0.01; calibration 1201–1449 sets a finite-sample absolute-residual quantile; test starts 1451. Scaling is fitted on training only. Embargoed boundaries prevent target overlap.
 
@@ -35,6 +35,7 @@ Frozen ridge interval radius = 0.860936; lower endpoint clipped at zero. Expandi
 ### Limits
 
 - Synthetic heteroscedastic data tests a known mechanism; it is not a historical market backtest or evidence of alpha. Squared returns are noisy variance proxies.
+- The post-break stress has unit variance persistence and no finite stationary unconditional variance. It is a deliberately nonstationary stress, not a stable high-volatility regime.
 - Serial dependence and deliberate distribution shift violate exchangeability. Split-conformal intervals here are diagnostics; 90% empirical coverage is not guaranteed under these conditions.
 - Mean absolute error, RMSE and QLIKE can rank models differently. QLIKE uses a 10⁻⁵ positivity floor, disclosed because near-zero forecasts can dominate it.
 - Only one process seed is shown. Hyperparameters are selected without test data, but broad model selection uncertainty and transaction costs are not quantified.
@@ -45,7 +46,7 @@ Predict next-day realized variance from six causal return features. Compare a sm
 
 ### Method
 
-Seed 73: simulated GARCH-like returns. Features at close t: squared return, 5/20-day realized variance, return, 20-day mean absolute return and 5-day mean return. Label: r² at t+1. Shift starts at target day 1450 when enabled.
+Seed 73: Gaussian innovations with v[t]=ω+α r[t−1]²+β v[t−1]. Baseline (ω,α,β)=(0.025,0.10,0.84); from day 1450 the stress case uses (0.12,0.16,0.84), deliberately α+β=1. Features at close t: squared return, 5/20-day variance, return, 20-day mean absolute return and 5-day mean return. Label: r² at t+1.
 
 Training targets <1000; validation 1001–1199 chooses ridge penalty 0.01; calibration 1201–1449 sets a finite-sample absolute-residual quantile; test starts 1451. Scaling is fitted on training only. Embargoed boundaries prevent target overlap.
 
@@ -66,9 +67,14 @@ Frozen ridge interval radius = 0.860936; lower endpoint clipped at zero. Expandi
 ### Limits
 
 - Synthetic heteroscedastic data tests a known mechanism; it is not a historical market backtest or evidence of alpha. Squared returns are noisy variance proxies.
+- The post-break stress has unit variance persistence and no finite stationary unconditional variance. It is a deliberately nonstationary stress, not a stable high-volatility regime.
 - Serial dependence and deliberate distribution shift violate exchangeability. Split-conformal intervals here are diagnostics; 90% empirical coverage is not guaranteed under these conditions.
 - Mean absolute error, RMSE and QLIKE can rank models differently. QLIKE uses a 10⁻⁵ positivity floor, disclosed because near-zero forecasts can dominate it.
 - Only one process seed is shown. Hyperparameters are selected without test data, but broad model selection uncertainty and transaction costs are not quantified.
+
+## Interpretation
+
+The neural model improves stable-regime MAE on this seed, but model rankings depend on the loss. The stressed process deliberately has unit variance persistence. Frozen interval coverage deteriorates sharply, and expanding refits improve some scores while worsening MAE. These outcomes demonstrate why adaptation and uncertainty claims require separate evaluation.
 
 ## Concepts to explain in an interview
 

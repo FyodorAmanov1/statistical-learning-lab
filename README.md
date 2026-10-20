@@ -43,6 +43,10 @@ CI reproduces every applied case with `python src/studio.py --check docs/study.j
 - Nominal interval coverage: **90 %**
 - Observed test coverage: **18.7614 %**
 
+## Interpretation
+
+The neural model improves stable-regime MAE on this seed, but model rankings depend on the loss. The stressed process deliberately has unit variance persistence. Frozen interval coverage deteriorates sharply, and expanding refits improve some scores while worsening MAE. These outcomes demonstrate why adaptation and uncertainty claims require separate evaluation.
+
 ## Design
 
 ```mermaid
@@ -61,6 +65,7 @@ flowchart LR
 Seeded synthetic returns; strictly ordered training, tuning, calibration and held-out targets. All reported models are computed locally with NumPy.
 
 - Synthetic heteroscedastic data tests a known mechanism; it is not a historical market backtest or evidence of alpha. Squared returns are noisy variance proxies.
+- The post-break stress has unit variance persistence and no finite stationary unconditional variance. It is a deliberately nonstationary stress, not a stable high-volatility regime.
 - Serial dependence and deliberate distribution shift violate exchangeability. Split-conformal intervals here are diagnostics; 90% empirical coverage is not guaranteed under these conditions.
 - Mean absolute error, RMSE and QLIKE can rank models differently. QLIKE uses a 10⁻⁵ positivity floor, disclosed because near-zero forecasts can dominate it.
 - Only one process seed is shown. Hyperparameters are selected without test data, but broad model selection uncertainty and transaction costs are not quantified.
