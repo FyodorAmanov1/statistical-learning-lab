@@ -1,0 +1,14 @@
+{
+  "task_id": "ML01",
+  "status": "completed",
+  "summary": "Added a reusable training-fitted scaler and integrated training-only model fitting. Thirteen tests pass. Measured holdout mutations leave preprocessing, training transforms, coefficients, alpha, and validation losses unchanged; a deliberately leaky full-data scaler changes coefficients. Preserved the negative holdout result versus the training-mean baseline.",
+  "evidence_paths": [
+    "lab.py",
+    "tests/test_lab.py",
+    "tests/test_preprocessing.py",
+    "results/latest.json",
+    "reports/ML01.md",
+    "REFERENCES.md",
+    "README.md"
+  ]
+}
