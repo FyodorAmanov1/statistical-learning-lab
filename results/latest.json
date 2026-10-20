@@ -4,21 +4,64 @@
   "metrics": {
     "selected_alpha": 10.0,
     "validation_mse": {
-      "0.0": 1.0632475547924314,
+      "0.0": 1.0632475547924312,
       "0.1": 1.0632396067897794,
-      "1.0": 1.0631709803861913,
+      "1.0": 1.063170980386191,
       "10.0": 1.0627589946487639,
-      "100.0": 1.0767276638360308
+      "100.0": 1.0767276638360306
     },
-    "holdout_mse": 1.391949152385742,
+    "holdout_mse": 1.3919491523857421,
     "training_mean_baseline_mse": 1.2044389939010804,
     "train_count": 900,
     "validation_count": 299,
     "test_count": 299
   },
+  "preprocessing": {
+    "fit_partition": "train",
+    "columns": [
+      0,
+      1
+    ],
+    "mean": [
+      -0.1909458937864163,
+      -0.047021187658044916
+    ],
+    "scale": [
+      1.6495395511759399,
+      0.7000360905675038
+    ],
+    "ddof": 0,
+    "constant_feature": "Column 2 passed through unchanged",
+    "coefficients": [
+      1.3011585210561962,
+      0.020385783248785323,
+      -0.18835238093160414
+    ]
+  },
+  "training_only_audit": {
+    "intervention": "Only test rows: x0=1000+10*x0, x1=-500+20*x1, y=100-7*y; constant unchanged",
+    "holdout_feature_max_abs_change": 1027.6412326969405,
+    "holdout_target_max_abs_change": 120.07547514308611,
+    "scaler_mean_max_abs_change": 0.0,
+    "scaler_scale_max_abs_change": 0.0,
+    "transformed_training_max_abs_change": 0.0,
+    "coefficient_max_abs_change": 0.0,
+    "selected_alpha_unchanged": true,
+    "validation_losses_unchanged": true,
+    "holdout_prediction_max_abs_change": 796.0828443277579,
+    "original_holdout_mse": 1.3919491523857421,
+    "changed_holdout_mse": 454573.6829052938,
+    "leaky_control": {
+      "description": "Incorrect full-data scaler, same training labels and fixed original selected alpha",
+      "scaler_mean_max_abs_change": 199.3213377512691,
+      "scaler_scale_max_abs_change": 398.0306063293712,
+      "coefficient_max_abs_change": 0.7059913823224809
+    }
+  },
   "provenance": {
     "data": "Synthetic AR(1) series with a prescribed coefficient shift",
-    "numpy": "2.2.4"
+    "numpy": "2.2.4",
+    "cost_assumptions": "Local CPU and NumPy only; no paid services. Runtime, energy and monetary cost not measured."
   },
   "limitations": [
     "Single synthetic series and a single prescribed shift; not a financial forecasting result.",
