@@ -1,18 +1,193 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101715"><meta name="description" content="Interactive applied research by Fyodor Amanov: inspect reproducible experiments, measured comparisons and their scientific limits."><title>RegimeLab · Fyodor Amanov</title><link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"></head>
-<body>
-<aside><a class="brand" href="https://github.com/FyodorAmanov1"><img src="icon.svg" width="34" height="34" alt=""><span>AMANOV<span>RESEARCH / ENGINEERING</span></span></a><p class="nav-label">EXPERIMENTS</p><nav id="cases" aria-label="Select experiment"></nav><div class="aside-bottom"><div class="pulse"></div><span>COMPUTED. RECORDED. REPRODUCIBLE.</span><p>Explore the experiment.<br>Inspect the assumptions.</p><a href="https://github.com/FyodorAmanov1">All research ↗</a></div></aside>
-<main>
-<header><span>THE APPLIED RESEARCH SERIES <b>/</b> <span id="series">01</span></span><a id="source" href="https://github.com/FyodorAmanov1">View source ↗</a></header>
-<section class="intro"><div class="edition">AN OPEN RESEARCH INSTRUMENT <span>BY FYODOR AMANOV</span></div><h1 id="title">Research Studio</h1><p id="subtitle">Loading reproducible experiments…</p><div class="intro-footer"><span class="tag">CPU REPRODUCIBLE</span><span class="tag">MEASURED RESULTS</span><a href="study.json" download>Download full study ↓</a></div></section>
-<div id="error" role="alert" hidden></div>
-<section class="experiment" aria-live="polite"><div class="case-heading"><div><span class="eyebrow" id="kicker"></span><h2 id="case-title"></h2><p id="description"></p></div><span class="record-label">RECORDED EXPERIMENT<br><b>Explore below ↓</b></span></div><div id="metrics" class="metric-grid"></div></section>
-<section id="evidence" class="panel" hidden><div class="panel-heading"><div><span class="eyebrow">CROSS-PROJECT INTELLIGENCE</span><h3>Search the evidence.</h3></div><span class="subtle">LOCAL BM25 · NO MODEL CALL</span></div><form id="search-form"><label for="query" class="sr-only">Research question</label><input id="query" placeholder="Try: fermionic double occupancy" value="quantum portfolio risk"><button type="submit">Find evidence ↗</button></form><div class="examples"><button data-query="Grover oracle preparation calls">Quantum resources</button><button data-query="informed flow latency">Market latency</button><button data-query="volatility regime break coverage">Forecast uncertainty</button></div><div id="evidence-results"></div><details><summary>Audit a numeric claim</summary><div class="claim-grid"><label>Evidence record<select id="claim-source"></select></label><label>Metric<select id="claim-metric"></select></label><label>Value<input type="number" id="claim-value" step="any"></label><label>Unit<input id="claim-unit"></label></div><button id="claim-check">Validate claim</button><p id="claim-status" role="status"></p></details></section>
-<section id="replay" class="panel" hidden><div class="panel-heading"><div><span class="eyebrow">INSIDE THE MATCHING ENGINE</span><h3>The market, event by event.</h3></div><button id="play">Play replay ▶</button></div><div class="replay-top"><span id="replay-step"></span><label class="sr-only" for="replay-range">Event batch</label><input id="replay-range" type="range" min="0" max="239" value="0"></div><div class="replay-layout"><div><div class="depth-label"><span>PRICE / TICKS</span><span>RESTING SIZE</span></div><div id="asks"></div><div id="mid" class="mid"></div><div id="bids"></div></div><div class="replay-account"><span class="eyebrow">MANAGED POLICY / SEED 1729</span><div id="replay-values"></div><h4>Fills this batch</h4><div id="replay-fills"></div><p class="subtle">Full recorded snapshots of the Python engine. Playback changes the event index; it does not simulate new market paths.</p></div></div></section>
-<section id="charts" class="charts"></section>
-<section class="panel table-panel"><div class="panel-heading"><div><span class="eyebrow">EXPERIMENT LEDGER</span><h3>Inspect the comparison.</h3></div><button id="csv">Export table ↓</button></div><div class="table-scroll"><table id="table"></table></div></section>
-<section class="method-grid"><article class="panel"><span class="eyebrow">HOW IT WORKS</span><h3>The method.</h3><ol id="method"></ol></article><article class="panel limits"><span class="eyebrow">WHERE THE EVIDENCE STOPS</span><h3>Assumptions & limitations.</h3><ul id="limitations"></ul></article></section>
-<section class="reproduce"><div><span class="eyebrow">MAKE IT YOUR OWN</span><h3>Reproduce the result.</h3><p>Python 3.12 · pinned NumPy + SciPy · CPU · no API keys</p></div><div><code id="command"></code><button id="copy" aria-label="Copy reproduce command">Copy</button></div></section>
-<section class="provenance"><details><summary>Data provenance & primary references</summary><p id="provenance"></p><ul id="references"></ul><p>These are recorded research experiments. Controls explore computed cases; they do not submit investments, run quantum hardware or call an AI provider.</p></details></section>
-<footer><span>FYODOR AMANOV / APPLIED RESEARCH</span><a href="https://fyodoramanov1.github.io/WeatherPrediction/">Explore Atmos weather ↗</a><span>MIT · SOURCE & DATA AVAILABLE</span></footer>
-</main><script type="module" src="app.js"></script></body></html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#101715" />
+    <meta
+      name="description"
+      content="Interactive applied research by Fyodor Amanov: inspect reproducible experiments, measured comparisons and their scientific limits."
+    />
+    <title>RegimeLab · Fyodor Amanov</title>
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <aside>
+      <a class="brand" href="https://github.com/FyodorAmanov1"
+        ><img src="icon.svg" width="34" height="34" alt="" /><span
+          >AMANOV<span>RESEARCH / ENGINEERING</span></span
+        ></a
+      >
+      <p class="nav-label">EXPERIMENTS</p>
+      <nav id="cases" aria-label="Select experiment"></nav>
+      <div class="aside-bottom">
+        <div class="pulse"></div>
+        <span>COMPUTED. RECORDED. REPRODUCIBLE.</span>
+        <p>Explore the experiment.<br />Inspect the assumptions.</p>
+        <a href="https://github.com/FyodorAmanov1">All research ↗</a>
+      </div>
+    </aside>
+    <main>
+      <header>
+        <span
+          >THE APPLIED RESEARCH SERIES <b>/</b>
+          <span id="series">01</span></span
+        ><a id="source" href="https://github.com/FyodorAmanov1"
+          >View source ↗</a
+        >
+      </header>
+      <section class="intro">
+        <div class="edition">
+          AN OPEN RESEARCH INSTRUMENT <span>BY FYODOR AMANOV</span>
+        </div>
+        <h1 id="title">Research Studio</h1>
+        <p id="subtitle">Loading reproducible experiments…</p>
+        <div class="intro-footer">
+          <span class="tag">CPU REPRODUCIBLE</span
+          ><span class="tag">MEASURED RESULTS</span
+          ><a href="study.json" download>Download full study ↓</a>
+        </div>
+      </section>
+      <div id="error" role="alert" hidden></div>
+      <section class="experiment" aria-live="polite">
+        <div class="case-heading">
+          <div>
+            <span class="eyebrow" id="kicker"></span>
+            <h2 id="case-title"></h2>
+            <p id="description"></p>
+          </div>
+          <span class="record-label"
+            >RECORDED EXPERIMENT<br /><b>Explore below ↓</b></span
+          >
+        </div>
+        <div id="metrics" class="metric-grid"></div>
+      </section>
+      <section id="evidence" class="panel" hidden>
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">CROSS-PROJECT INTELLIGENCE</span>
+            <h3>Search the evidence.</h3>
+          </div>
+          <span class="subtle">LOCAL BM25 · NO MODEL CALL</span>
+        </div>
+        <form id="search-form">
+          <label for="query" class="sr-only">Research question</label
+          ><input
+            id="query"
+            placeholder="Try: fermionic double occupancy"
+            value="quantum portfolio risk"
+          /><button type="submit">Find evidence ↗</button>
+        </form>
+        <div class="examples">
+          <button data-query="Grover oracle preparation calls">
+            Quantum resources</button
+          ><button data-query="informed flow latency">Market latency</button
+          ><button data-query="volatility regime break coverage">
+            Forecast uncertainty
+          </button>
+        </div>
+        <div id="evidence-results"></div>
+        <details>
+          <summary>Audit a numeric claim</summary>
+          <div class="claim-grid">
+            <label>Evidence record<select id="claim-source"></select></label
+            ><label>Metric<select id="claim-metric"></select></label
+            ><label
+              >Value<input type="number" id="claim-value" step="any" /></label
+            ><label>Unit<input id="claim-unit" /></label>
+          </div>
+          <button id="claim-check">Validate claim</button>
+          <p id="claim-status" role="status"></p>
+        </details>
+      </section>
+      <section id="replay" class="panel" hidden>
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">INSIDE THE MATCHING ENGINE</span>
+            <h3>The market, event by event.</h3>
+          </div>
+          <button id="play">Play replay ▶</button>
+        </div>
+        <div class="replay-top">
+          <span id="replay-step"></span
+          ><label class="sr-only" for="replay-range">Event batch</label
+          ><input id="replay-range" type="range" min="0" max="239" value="0" />
+        </div>
+        <div class="replay-layout">
+          <div>
+            <div class="depth-label">
+              <span>PRICE / TICKS</span><span>RESTING SIZE</span>
+            </div>
+            <div id="asks"></div>
+            <div id="mid" class="mid"></div>
+            <div id="bids"></div>
+          </div>
+          <div class="replay-account">
+            <span class="eyebrow">MANAGED POLICY / SEED 1729</span>
+            <div id="replay-values"></div>
+            <h4>Fills this batch</h4>
+            <div id="replay-fills"></div>
+            <p class="subtle">
+              Full recorded snapshots of the Python engine. Playback changes the
+              event index; it does not simulate new market paths.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section id="charts" class="charts"></section>
+      <section class="panel table-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">EXPERIMENT LEDGER</span>
+            <h3>Inspect the comparison.</h3>
+          </div>
+          <button id="csv">Export table ↓</button>
+        </div>
+        <div class="table-scroll"><table id="table"></table></div>
+      </section>
+      <section class="method-grid">
+        <article class="panel">
+          <span class="eyebrow">HOW IT WORKS</span>
+          <h3>The method.</h3>
+          <ol id="method"></ol>
+        </article>
+        <article class="panel limits">
+          <span class="eyebrow">WHERE THE EVIDENCE STOPS</span>
+          <h3>Assumptions & limitations.</h3>
+          <ul id="limitations"></ul>
+        </article>
+      </section>
+      <section class="reproduce">
+        <div>
+          <span class="eyebrow">MAKE IT YOUR OWN</span>
+          <h3>Reproduce the result.</h3>
+          <p>Python 3.12 · pinned NumPy + SciPy · CPU · no API keys</p>
+        </div>
+        <div>
+          <code id="command"></code
+          ><button id="copy" aria-label="Copy reproduce command">Copy</button>
+        </div>
+      </section>
+      <section class="provenance">
+        <details>
+          <summary>Data provenance & primary references</summary>
+          <p id="provenance"></p>
+          <ul id="references"></ul>
+          <p>
+            These are recorded research experiments. Controls explore computed
+            cases; they do not submit investments, run quantum hardware or call
+            an AI provider.
+          </p>
+        </details>
+      </section>
+      <footer>
+        <span>FYODOR AMANOV / APPLIED RESEARCH</span
+        ><a href="https://fyodoramanov1.github.io/WeatherPrediction/"
+          >Explore Atmos weather ↗</a
+        ><span>MIT · SOURCE & DATA AVAILABLE</span>
+      </footer>
+    </main>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
