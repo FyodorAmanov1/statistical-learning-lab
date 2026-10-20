@@ -1,6 +1,6 @@
-# Primary references and boundaries
+# Primary references and implementation boundaries
 
-- Hoerl and Kennard (1970), Ridge Regression: Biased Estimation for Nonorthogonal Problems: https://doi.org/10.1080/00401706.1970.10488634
-- Hastie, Tibshirani and Friedman, The Elements of Statistical Learning: https://hastie.su.domains/ElemStatLearn/
+- [A gentle introduction to conformal prediction](https://arxiv.org/abs/2107.07511)
+- [Forecasting: principles and practice · time-series cross-validation](https://otexts.com/fpp3/tscv.html)
 
-The initial synthetic experiment uses a prescribed AR(1) coefficient change and training-only preprocessing. It provides a controlled illustration rather than market forecasting evidence.
+The implementation, data provenance and scope limits are documented in [the technical case study](reports/applied-study.md). Citation identifies an algorithmic foundation, not equivalence with the full paper or a claim of hardware performance.
