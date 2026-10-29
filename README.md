@@ -39,9 +39,11 @@ The nominal 90% bands cover **91.07%** of observations in the stable evaluation 
 
 ## Interpretation
 
-These results come from one synthetic process and seed, not a market backtest or an independent multi-dataset benchmark. Chronological dependence and distribution shift break the exchangeability assumptions behind ordinary split-conformal guarantees; the displayed coverage is an empirical diagnostic.
+The trajectory above uses one illustrative synthetic seed. The studio also includes 20 independently generated stable/stress pairs (process seeds 100-119), using the same frozen validation-selection and calibration procedure. Chronological dependence and distribution shift break the exchangeability assumptions behind ordinary split-conformal guarantees; the displayed coverage is an empirical diagnostic.
 
-The natural next study is to repeat the full selection and evaluation process over independent seeds and different shift mechanisms before drawing a broader conclusion about model rankings.
+Across these seeds, mean coverage is **88.77% (seed SD 7.50 percentage points)** in stable histories and **18.39% (SD 9.70 pp)** under stress. Expanding ridge improves stress RMSE in 16/20 seeds but worsens MAE in all 20. Stress errors are highly skewed: ridge RMSE averages 783.09 (SD 3,335.56), while its seed p10-p90 is 9.37-90.44. Extreme paths are retained.
+
+Open the studio's **Repeated seeds / stable** and **Repeated seeds / stress** cases for per-seed charts, paired error differences, SD, MCSE and empirical quantiles. These measure variability for one synthetic generator, not market accuracy. Neural initialization stays fixed; different shift mechanisms and real data remain future work. [Full repeated-seed study](reports/ML02.md).
 
 ## Run locally
 
@@ -65,6 +67,8 @@ Open
 To regenerate the study or compare it with the saved artifact:
 
 ```bash
+python -m unittest discover -s tests -v
+python lab.py --output results/latest.json
 python src/studio.py --out docs/study.json
 python src/studio.py --check docs/study.json
 ```
