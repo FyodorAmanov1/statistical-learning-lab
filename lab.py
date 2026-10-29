@@ -163,7 +163,9 @@ def experiment():
     # Holdout is evaluated only after selection; preprocessing and coefficients stay training-only.
     test_mse = float(np.mean((scaler.transform(x[test]) @ weights - y[test])**2))
     baseline_mse = float(np.mean((y[test] - y[train].mean())**2))
+    from src.studio import repeated_seed_protocol
     return {"project": "statistical-learning-lab", "seed": 1729,
+            "repeated_seed_protocol": repeated_seed_protocol(),
             "metrics": {"selected_alpha": chosen, "validation_mse": validation_losses,
                         "holdout_mse": test_mse, "training_mean_baseline_mse": baseline_mse,
                         "train_count": len(train), "validation_count": len(validation), "test_count": len(test)},

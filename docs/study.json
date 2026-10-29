@@ -7,6 +7,58 @@
   "seed": 73,
   "cases": [
     {
+      "protocol_record": {
+        "seed": 73,
+        "regime": "stationary",
+        "selected_alpha": 0.01,
+        "validation_mse": {
+          "0.01": 0.25665056718576956,
+          "1": 0.25668164633901275,
+          "10": 0.25688665833764074,
+          "100": 0.256916105760792
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.9107468123861566,
+        "interval_radius": 0.860935509812074,
+        "mean_interval_width": 1.2600185082770556,
+        "models": {
+          "Training mean": {
+            "mae": 0.40050166457453806,
+            "rmse": 0.6151199081343757,
+            "qlike": 0.13075917798325404,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.5313932576004445,
+            "rmse": 0.8420620790901862,
+            "qlike": 305.5561880801766,
+            "floor_fraction": 0.00546448087431694
+          },
+          "Ridge": {
+            "mae": 0.4030305544093381,
+            "rmse": 0.6070585948189048,
+            "qlike": 0.0950162376379177,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.376228127862344,
+            "rmse": 0.6115753774390121,
+            "qlike": 0.12849919928575243,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.40378462688112504,
+            "rmse": 0.6030054666051282,
+            "qlike": 0.0880207810486555,
+            "floor_fraction": 0.0
+          }
+        }
+      },
       "id": "stationary",
       "label": "Stable regime",
       "kicker": "TIME-SERIES ML / CAUSAL EVALUATION",
@@ -1175,11 +1227,63 @@
         "The post-break stress has unit variance persistence and no finite stationary unconditional variance. It is a deliberately nonstationary stress, not a stable high-volatility regime.",
         "Serial dependence and deliberate distribution shift violate exchangeability. Split-conformal intervals here are diagnostics; 90% empirical coverage is not guaranteed under these conditions.",
         "Mean absolute error, RMSE and QLIKE can rank models differently. QLIKE uses a 10\u207b\u2075 positivity floor, disclosed because near-zero forecasts can dominate it.",
-        "Only one process seed is shown. Hyperparameters are selected without test data, but broad model selection uncertainty and transaction costs are not quantified."
+        "This trajectory shows one process seed; the repeated-seed cases quantify variability for the same generator. Shift mechanisms, model families and transaction costs are not explored."
       ],
       "reproduce": "python src/studio.py --out docs/study.json"
     },
     {
+      "protocol_record": {
+        "seed": 73,
+        "regime": "shift",
+        "selected_alpha": 0.01,
+        "validation_mse": {
+          "0.01": 0.25665056718576956,
+          "1": 0.25668164633901275,
+          "10": 0.25688665833764074,
+          "100": 0.256916105760792
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.18761384335154827,
+        "interval_radius": 0.860935509812074,
+        "mean_interval_width": 1.6508994979080762,
+        "models": {
+          "Training mean": {
+            "mae": 10.013614321406816,
+            "rmse": 21.64214304473103,
+            "qlike": 25.715359660077308,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 13.014247689813274,
+            "rmse": 24.508093021461736,
+            "qlike": 440.1749957666399,
+            "floor_fraction": 0.0
+          },
+          "Ridge": {
+            "mae": 9.190811689009081,
+            "rmse": 19.812961813631595,
+            "qlike": 36624.05854083124,
+            "floor_fraction": 0.029143897996357013
+          },
+          "Nonlinear MLP": {
+            "mae": 9.852230098038333,
+            "rmse": 21.50221277030048,
+            "qlike": 17.806670396779044,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 9.838731697519906,
+            "rmse": 18.33977582813258,
+            "qlike": 3.183962644650883,
+            "floor_fraction": 0.0
+          }
+        }
+      },
       "id": "shift",
       "label": "Volatility regime break",
       "kicker": "TIME-SERIES ML / CAUSAL EVALUATION",
@@ -2348,7 +2452,1371 @@
         "The post-break stress has unit variance persistence and no finite stationary unconditional variance. It is a deliberately nonstationary stress, not a stable high-volatility regime.",
         "Serial dependence and deliberate distribution shift violate exchangeability. Split-conformal intervals here are diagnostics; 90% empirical coverage is not guaranteed under these conditions.",
         "Mean absolute error, RMSE and QLIKE can rank models differently. QLIKE uses a 10\u207b\u2075 positivity floor, disclosed because near-zero forecasts can dominate it.",
-        "Only one process seed is shown. Hyperparameters are selected without test data, but broad model selection uncertainty and transaction costs are not quantified."
+        "This trajectory shows one process seed; the repeated-seed cases quantify variability for the same generator. Shift mechanisms, model families and transaction costs are not explored."
+      ],
+      "reproduce": "python src/studio.py --out docs/study.json"
+    },
+    {
+      "id": "repeated-stationary",
+      "label": "Repeated seeds / stable",
+      "kicker": "INDEPENDENT DATASETS / FROZEN PROTOCOL",
+      "title": "Does the conclusion survive a new process seed?",
+      "description": "Repeat all five forecasts on independent synthetic histories. Compare paired errors and frozen 90% interval coverage; each dataset has equal weight. Table coverage is a fraction; chart coverage is percent.",
+      "metrics": [
+        {
+          "label": "Independent process seeds",
+          "value": 20.0,
+          "unit": "",
+          "note": ""
+        },
+        {
+          "label": "Mean coverage",
+          "value": 88.7704918032787,
+          "unit": "%",
+          "note": ""
+        },
+        {
+          "label": "Coverage SD",
+          "value": 7.5030632096144245,
+          "unit": "pp",
+          "note": ""
+        },
+        {
+          "label": "Expanding beats ridge / RMSE",
+          "value": 13.0,
+          "unit": "/ 20 seeds",
+          "note": ""
+        }
+      ],
+      "charts": [
+        {
+          "title": "Frozen interval coverage across process seeds",
+          "x": [
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "xlabel": "Process seed (independent datasets)",
+          "series": [
+            {
+              "name": "Coverage / %",
+              "values": [
+                95.26411657559198,
+                91.43897996357013,
+                97.26775956284153,
+                89.07103825136612,
+                89.25318761384335,
+                90.7103825136612,
+                97.26775956284153,
+                86.33879781420765,
+                72.49544626593807,
+                84.8816029143898,
+                88.34244080145719,
+                91.43897996357013,
+                94.71766848816029,
+                91.07468123861567,
+                92.53187613843352,
+                66.66666666666666,
+                87.06739526411657,
+                92.89617486338798,
+                85.61020036429873,
+                91.07468123861567
+              ]
+            },
+            {
+              "name": "Nominal / %",
+              "values": [
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90
+              ]
+            }
+          ]
+        },
+        {
+          "title": "MAE across process seeds",
+          "x": [
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "xlabel": "Process seed (independent datasets)",
+          "series": [
+            {
+              "name": "Training mean",
+              "values": [
+                0.356307080693665,
+                0.4809047228057813,
+                0.41663802252783305,
+                0.32139863930340345,
+                0.5203859140115639,
+                0.3710308228922365,
+                0.4386726514836073,
+                0.3670892461752517,
+                0.4583621792914214,
+                0.4316719328153481,
+                0.46956896197379006,
+                0.42672368584692294,
+                0.3669905244360452,
+                0.4123697844480637,
+                0.43261545833988335,
+                0.9204393633847864,
+                0.4309937191362677,
+                0.42443000900443417,
+                0.3725517925775085,
+                0.3923578792404469
+              ]
+            },
+            {
+              "name": "Lagged square",
+              "values": [
+                0.41825210921097467,
+                0.49503690253291227,
+                0.5213679578947695,
+                0.3581054330768916,
+                0.6393208646841728,
+                0.4401201771104878,
+                0.5568392581735686,
+                0.5068532579587268,
+                0.5988268724396256,
+                0.530226887442303,
+                0.5437222276315494,
+                0.525610720422627,
+                0.45516450922612184,
+                0.5396655482564715,
+                0.5293700713086071,
+                1.1450969217423246,
+                0.5577338234972089,
+                0.5306681132451827,
+                0.4161648859403634,
+                0.4172654637346158
+              ]
+            },
+            {
+              "name": "Ridge",
+              "values": [
+                0.33268699371400023,
+                0.43570287732473506,
+                0.41702042273662826,
+                0.29896913381656226,
+                0.5117079048034625,
+                0.3584320730157518,
+                0.43013519125864974,
+                0.38112377119716717,
+                0.4750278570902442,
+                0.43104555302476727,
+                0.4605915673418379,
+                0.4137870156468516,
+                0.35922327465321885,
+                0.4102371420320814,
+                0.42598393501776294,
+                0.8461480489727733,
+                0.431884231845698,
+                0.4178711614237511,
+                0.3465321745749252,
+                0.3517901645870084
+              ]
+            },
+            {
+              "name": "Nonlinear MLP",
+              "values": [
+                0.3122073858718088,
+                0.41511463304987684,
+                0.3877535978595505,
+                0.27920827962344436,
+                0.48870168985070417,
+                0.32934621283639715,
+                0.41743909850586575,
+                0.36407863872357465,
+                0.44235473751488547,
+                0.4009513408314346,
+                0.4315317117566864,
+                0.3869983621028456,
+                0.3350180094512156,
+                0.382251123272836,
+                0.3994320224452929,
+                0.9026725476506552,
+                0.4034664413685768,
+                0.3962662722205041,
+                0.3149732258338164,
+                0.3191332859386472
+              ]
+            },
+            {
+              "name": "Expanding ridge",
+              "values": [
+                0.32493297262200305,
+                0.4281305736060106,
+                0.42121375142187034,
+                0.29767229406049783,
+                0.5141850980996977,
+                0.35024251978185894,
+                0.50761242790986,
+                0.38201394576822273,
+                0.46836708658825,
+                0.4237008691715498,
+                0.45777342696051515,
+                0.41567864111955044,
+                0.3621803215858834,
+                0.41214729516482557,
+                0.434023290409039,
+                0.8829999840649067,
+                0.4213425676378974,
+                0.42658115340318864,
+                0.33871450220665544,
+                0.34845704051237647
+              ]
+            }
+          ]
+        },
+        {
+          "title": "RMSE across process seeds",
+          "x": [
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "xlabel": "Process seed (independent datasets)",
+          "series": [
+            {
+              "name": "Training mean",
+              "values": [
+                0.4810679386767157,
+                0.8362060151741332,
+                0.6720409480574883,
+                0.44734862964281247,
+                0.9052541747333143,
+                0.5841033191355486,
+                0.795978803802435,
+                0.5721207069299242,
+                0.732001392231268,
+                0.747412919969905,
+                0.8006154292580272,
+                0.6290703053158894,
+                0.5279511336287248,
+                0.6292433243452508,
+                0.6953171821587927,
+                2.323368920802468,
+                0.7131965068049552,
+                0.6191535769249992,
+                0.4700374875688756,
+                0.5488000244383818
+              ]
+            },
+            {
+              "name": "Lagged square",
+              "values": [
+                0.6558971278258242,
+                0.8778967243148607,
+                0.8719790645129087,
+                0.567929104129745,
+                1.109005394395654,
+                0.8056958044951421,
+                0.9991462014834102,
+                0.7609721340865129,
+                0.9811021959355565,
+                0.9736595946030854,
+                0.9811213466496624,
+                0.8446895505846727,
+                0.7218910788700661,
+                0.8906680226058126,
+                0.8885909153725646,
+                2.4766741592501718,
+                0.9394358634191913,
+                0.8434008000043667,
+                0.6373426117482612,
+                0.7262913231115367
+              ]
+            },
+            {
+              "name": "Ridge",
+              "values": [
+                0.4693243784980441,
+                0.7392630760591168,
+                0.6700955907600415,
+                0.43191183927847365,
+                0.8616820950800534,
+                0.5804567907984755,
+                0.7347509383709329,
+                0.5633737628641876,
+                0.7285060427238172,
+                0.7039126114746781,
+                0.7670815099100176,
+                0.6132109093439831,
+                0.5244537548621744,
+                0.6318982060012709,
+                0.6767219275320856,
+                2.0126923941820256,
+                0.6803669406034697,
+                0.6180804764844434,
+                0.46608700056060304,
+                0.5418974080145107
+              ]
+            },
+            {
+              "name": "Nonlinear MLP",
+              "values": [
+                0.46909924397013464,
+                0.7973567528984828,
+                0.673193504067381,
+                0.43486209796121494,
+                0.8894186533589122,
+                0.5801949606499536,
+                0.7862475331684246,
+                0.5714390984861408,
+                0.7339550405652111,
+                0.7178916624486952,
+                0.7855824077085591,
+                0.6181185943855333,
+                0.5252548559293717,
+                0.6367160559086031,
+                0.6853693878786077,
+                2.2907690962374367,
+                0.6956747257319442,
+                0.6235618549533253,
+                0.45997568174598885,
+                0.5336958890253484
+              ]
+            },
+            {
+              "name": "Expanding ridge",
+              "values": [
+                0.4700719778373284,
+                0.7425900118838442,
+                0.6636292301181815,
+                0.4329800692235604,
+                0.8556830969489335,
+                0.579837508474093,
+                0.8662744092334786,
+                0.563082036589302,
+                0.7267611841973556,
+                0.7046696853892713,
+                0.7649417594430298,
+                0.6143400708229293,
+                0.524101449567103,
+                0.6348147159783565,
+                0.6753970877813614,
+                2.0074461125361363,
+                0.6762519692223385,
+                0.6161685590106147,
+                0.46409495108964477,
+                0.5405932781872044
+              ]
+            }
+          ]
+        }
+      ],
+      "table": {
+        "columns": [
+          "Model / paired difference",
+          "Measure",
+          "Mean",
+          "Seed SD",
+          "MCSE of mean",
+          "Seed p10",
+          "Seed p90"
+        ],
+        "rows": [
+          [
+            "Training mean",
+            "MAE",
+            0.44057511951941297,
+            0.12255815786804923,
+            0.027404837219010877,
+            0.36592218006180716,
+            0.4848528419263596
+          ],
+          [
+            "Training mean",
+            "RMSE",
+            0.7365144369799955,
+            0.3944613230308228,
+            0.08820423327914231,
+            0.4799648935659317,
+            0.8431108311300514
+          ],
+          [
+            "Training mean",
+            "QLIKE",
+            0.21842482368078092,
+            0.4191609541202438,
+            0.09372723869265356,
+            -0.07876929829777729,
+            0.3131320954452753
+          ],
+          [
+            "Lagged square",
+            "MAE",
+            0.5362706002764752,
+            0.15881993698282668,
+            0.03551321752758333,
+            0.4171554059551906,
+            0.6028762716640804
+          ],
+          [
+            "Lagged square",
+            "RMSE",
+            0.9276694508699501,
+            0.389396377218435,
+            0.08707167696525711,
+            0.654041676218068,
+            1.0101321207746348
+          ],
+          [
+            "Lagged square",
+            "QLIKE",
+            270.8100713119713,
+            213.69618379559628,
+            47.783919349924226,
+            79.95928356797,
+            514.2648485908155
+          ],
+          [
+            "Ridge",
+            "MAE",
+            0.42679502470389385,
+            0.11142105583283508,
+            0.024914505496701867,
+            0.3451476564888327,
+            0.4786958618615661
+          ],
+          [
+            "Ridge",
+            "RMSE",
+            0.7007883826701201,
+            0.3282038571169232,
+            0.07338861349910683,
+            0.4690006407043,
+            0.7765415684270213
+          ],
+          [
+            "Ridge",
+            "QLIKE",
+            0.10916401553004047,
+            0.20674757865062163,
+            0.04623016400462742,
+            -0.1013827507121988,
+            0.27241472212147816
+          ],
+          [
+            "Nonlinear MLP",
+            "MAE",
+            0.40544493083543093,
+            0.12783806102906006,
+            0.0285854594572745,
+            0.31469664183761564,
+            0.4469894327484674
+          ],
+          [
+            "Nonlinear MLP",
+            "RMSE",
+            0.7254188548539636,
+            0.3884530952980774,
+            0.0868607527156705,
+            0.46818688774772005,
+            0.8065629429445259
+          ],
+          [
+            "Nonlinear MLP",
+            "QLIKE",
+            0.17758613958591082,
+            0.352430318340064,
+            0.0788058149140274,
+            -0.09532063790483325,
+            0.3203357921723309
+          ],
+          [
+            "Expanding ridge",
+            "MAE",
+            0.4308984881047331,
+            0.12098053329390045,
+            0.02705206963993379,
+            0.3373363492481902,
+            0.5082696949288438
+          ],
+          [
+            "Expanding ridge",
+            "RMSE",
+            0.7061864581767033,
+            0.32909479143688997,
+            0.07358783246940016,
+            0.46947427516256,
+            0.8567422281773881
+          ],
+          [
+            "Expanding ridge",
+            "QLIKE",
+            0.10857753260855647,
+            0.20298637804358746,
+            0.04538913398119323,
+            -0.10319416744604384,
+            0.27425249238411964
+          ],
+          [
+            "Ridge minus Training mean",
+            "MAE",
+            -0.013780094815519167,
+            0.020939927898047907,
+            0.004682310222397941,
+            -0.041031127736199276,
+            0.0022049139406788397
+          ],
+          [
+            "Ridge minus Training mean",
+            "RMSE",
+            -0.035726054309875216,
+            0.06931840300970576,
+            0.01550006612214281,
+            -0.06479937279985358,
+            -0.0018581316117576173
+          ],
+          [
+            "Ridge minus Training mean",
+            "QLIKE",
+            -0.10926080815074043,
+            0.2386858878297073,
+            0.05337178704571152,
+            -0.13602251312730382,
+            -0.017537543516453792
+          ],
+          [
+            "Nonlinear MLP minus Training mean",
+            "MAE",
+            -0.0351301886839821,
+            0.016552084366295843,
+            0.003701158581234903,
+            -0.05839971904491334,
+            -0.017590878338371665
+          ],
+          [
+            "Nonlinear MLP minus Training mean",
+            "RMSE",
+            -0.011095582126031997,
+            0.01216252122462974,
+            0.0027196224236056086,
+            -0.029829114225591955,
+            0.002199111303381377
+          ],
+          [
+            "Nonlinear MLP minus Training mean",
+            "QLIKE",
+            -0.040838684094870105,
+            0.08392649880842505,
+            0.01876653564491935,
+            -0.06879049913158528,
+            0.024177026032880567
+          ],
+          [
+            "Expanding ridge minus Ridge",
+            "MAE",
+            0.0041034634008391,
+            0.020106058267248175,
+            0.004495851304513855,
+            -0.007854860454832057,
+            0.01152418629070718
+          ],
+          [
+            "Expanding ridge minus Ridge",
+            "RMSE",
+            0.005398075506583125,
+            0.02980667129844868,
+            0.006664974320632316,
+            -0.005321553294412418,
+            0.002957552561849775
+          ],
+          [
+            "Expanding ridge minus Ridge",
+            "QLIKE",
+            -0.000586482921484005,
+            0.026429303043841734,
+            0.005909771820397222,
+            -0.016226130932589494,
+            0.005498985459008524
+          ],
+          [
+            "Frozen ridge",
+            "coverage",
+            0.887704918032787,
+            0.07503063209614425,
+            0.016777359376175607,
+            0.8364298724954463,
+            0.9546448087431694
+          ],
+          [
+            "Frozen ridge",
+            "mean_interval_width",
+            1.2380109019796957,
+            0.37522738935454014,
+            0.08390339496165326,
+            0.8988298300059425,
+            1.5991380235969337
+          ]
+        ]
+      },
+      "method": [
+        "Process seeds: 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119; 2,000 returns each. Stable/stress histories share innovations within each seed; independent streams across seeds. Seed 73 remains a separate illustrative trajectory.",
+        "Unchanged six causal features and train <1000, validation 1001-1199, calibration 1201-1449, test 1451-1999 (549 targets). Same Gaussian GARCH-like generator and day-1450 persistent stress as the trajectory cases.",
+        "Fixed grid [0.01, 1, 10, 100]; validation MSE selects within each dataset; first minimum wins. No test tuning or seed exclusion. Selected penalty frozen for all expanding refits. MLP settings and initialization seed fixed.",
+        "Equal weight per independent process seed. Sample SD (ddof=1), MCSE of mean = SD/sqrt(n), linear empirical p10/p90. Quantiles describe dataset variability, not confidence or prediction intervals. Regimes paired by innovations; days are not independent replicates.",
+        "Frozen ridge uses absolute calibration residuals at rank ceil((249+1)*0.9)=225; lower endpoint clipped at zero. Width is actual mean upper minus lower. Expanding ridge refits every 60 labels strictly before each forecast block, including earlier evaluation observations; its intervals are not assessed.",
+        "Paired table differences subtract the named baseline on the same seed; negative means lower error. QLIKE floor remains 1e-5. Per-seed scores, floor-hit fractions, alpha counts and paired coverage changes are in the study JSON.",
+        "Selected alpha frequencies: {'0.01': 3, '1': 1, '10': 2, '100': 14}"
+      ],
+      "limitations": [
+        "Twenty synthetic histories from one generator and one shift mechanism do not establish real-world forecasting accuracy or market edge. Local CPU/NumPy only; runtime, energy and monetary cost are unmeasured.",
+        "Fixed neural initialization isolates process variability; optimizer-seed variability and architecture search are not measured. These summaries evaluate the fixed selection procedure, not a single universal penalty.",
+        "Serial dependence and shift violate ordinary split-conformal exchangeability. Coverage is empirical, not a guaranteed 90%. Stress has alpha+beta=1 and no finite stationary unconditional variance.",
+        "Heavy-tailed seed errors and near-zero forecasts can dominate means and QLIKE. SD/MCSE and empirical quantiles from a small ensemble do not justify normal-theory significance claims. Regimes are paired, not 40 independent datasets."
+      ],
+      "reproduce": "python src/studio.py --out docs/study.json"
+    },
+    {
+      "id": "repeated-shift",
+      "label": "Repeated seeds / stress",
+      "kicker": "INDEPENDENT DATASETS / FROZEN PROTOCOL",
+      "title": "Does the conclusion survive a new process seed?",
+      "description": "Repeat all five forecasts on independent synthetic histories. Compare paired errors and frozen 90% interval coverage; each dataset has equal weight. Table coverage is a fraction; chart coverage is percent.",
+      "metrics": [
+        {
+          "label": "Independent process seeds",
+          "value": 20.0,
+          "unit": "",
+          "note": ""
+        },
+        {
+          "label": "Mean coverage",
+          "value": 18.387978142076506,
+          "unit": "%",
+          "note": ""
+        },
+        {
+          "label": "Coverage SD",
+          "value": 9.700287298371975,
+          "unit": "pp",
+          "note": ""
+        },
+        {
+          "label": "Expanding beats ridge / RMSE",
+          "value": 16.0,
+          "unit": "/ 20 seeds",
+          "note": ""
+        }
+      ],
+      "charts": [
+        {
+          "title": "Frozen interval coverage across process seeds",
+          "x": [
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "xlabel": "Process seed (independent datasets)",
+          "series": [
+            {
+              "name": "Coverage / %",
+              "values": [
+                35.51912568306011,
+                18.0327868852459,
+                25.500910746812387,
+                23.67941712204007,
+                10.564663023679417,
+                24.59016393442623,
+                38.79781420765027,
+                9.836065573770492,
+                6.375227686703097,
+                10.746812386156648,
+                12.932604735883423,
+                26.775956284153008,
+                25.500910746812387,
+                12.750455373406194,
+                28.59744990892532,
+                2.73224043715847,
+                13.843351548269581,
+                12.021857923497267,
+                14.571948998178508,
+                14.389799635701275
+              ]
+            },
+            {
+              "name": "Nominal / %",
+              "values": [
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90,
+                90
+              ]
+            }
+          ]
+        },
+        {
+          "title": "MAE across process seeds",
+          "x": [
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "xlabel": "Process seed (independent datasets)",
+          "series": [
+            {
+              "name": "Training mean",
+              "values": [
+                4.52715094524605,
+                15.813073917237451,
+                16.644818353743503,
+                4.586111726874467,
+                33.447053124536126,
+                4.737282638258728,
+                9.966299654633254,
+                8.878714656304096,
+                82.24477353951376,
+                19.316894865667503,
+                30.63565795564805,
+                9.173232360021894,
+                5.888373004559886,
+                8.85737606912532,
+                11.009681668439502,
+                5796.975767029588,
+                24.2711062279368,
+                14.264155884384019,
+                5.707502756700137,
+                4.0976818336265985
+              ]
+            },
+            {
+              "name": "Lagged square",
+              "values": [
+                6.102701315626482,
+                15.666793114816311,
+                20.104990727576986,
+                5.479471598273081,
+                39.03654801112347,
+                6.478762284460857,
+                11.49247968195024,
+                10.993826406951927,
+                99.77183966166342,
+                23.572975114870452,
+                37.120007060512755,
+                11.185608972666328,
+                7.598126083273026,
+                11.48979028927152,
+                13.39568516256404,
+                6497.47327979438,
+                30.799348361654165,
+                17.870697590987056,
+                7.2212735052156685,
+                5.409125450660151
+              ]
+            },
+            {
+              "name": "Ridge",
+              "values": [
+                4.282814819966409,
+                13.243041689957531,
+                14.835815591382453,
+                4.153467065455383,
+                29.396515144552435,
+                4.390830337892629,
+                8.620404538307259,
+                7.812056348116514,
+                73.17349504041029,
+                16.592892018808424,
+                27.326103596106687,
+                8.693579664804844,
+                5.337331728186132,
+                7.8868029077244675,
+                9.873796840333105,
+                4781.633040420845,
+                21.474989092103115,
+                14.27154633408204,
+                5.151505635056893,
+                4.05326098320358
+              ]
+            },
+            {
+              "name": "Nonlinear MLP",
+              "values": [
+                4.475971250721822,
+                15.751748581295951,
+                16.368215451411107,
+                4.555939524397352,
+                33.21886429090014,
+                4.670653549137713,
+                9.909180062428812,
+                8.844538012770487,
+                81.96635314077692,
+                18.973892900080646,
+                30.609434512366196,
+                9.116912178597275,
+                5.8139796804816175,
+                8.66150585913671,
+                10.941186543040986,
+                5796.955438400841,
+                24.204081945578157,
+                13.93430129416965,
+                5.59364579642967,
+                3.855891264039047
+              ]
+            },
+            {
+              "name": "Expanding ridge",
+              "values": [
+                4.381198429006213,
+                16.178560913488173,
+                16.28428551824027,
+                4.716873932966069,
+                33.59832942841325,
+                4.869715213243041,
+                9.625682610625965,
+                8.337855534247527,
+                84.07048765071379,
+                17.735686414760085,
+                32.560971021654716,
+                9.14441265139718,
+                5.842094095083615,
+                8.434274299189084,
+                10.916419544064938,
+                5417.134421496407,
+                23.083407842634653,
+                15.306709543596043,
+                5.586011232814945,
+                4.807567094180234
+              ]
+            }
+          ]
+        },
+        {
+          "title": "RMSE across process seeds",
+          "x": [
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119
+          ],
+          "xlabel": "Process seed (independent datasets)",
+          "series": [
+            {
+              "name": "Training mean",
+              "values": [
+                10.157513898603673,
+                50.39557121655571,
+                42.20221723046607,
+                9.822540732835884,
+                86.3908535677498,
+                11.606523624846865,
+                21.19345334780392,
+                16.05918098553731,
+                217.15079238240173,
+                56.76307142109955,
+                86.68844554514301,
+                19.321720825657703,
+                11.949379753764983,
+                19.634590671206052,
+                25.043142410813594,
+                17044.299430167444,
+                64.3615395233506,
+                31.384803504992078,
+                10.630871361980146,
+                8.547924586695254
+              ]
+            },
+            {
+              "name": "Lagged square",
+              "values": [
+                11.580968167013195,
+                41.04324171836386,
+                46.00946058465637,
+                10.482508087402838,
+                90.23843230684147,
+                14.355787534627003,
+                22.256617208449985,
+                17.73680695885346,
+                248.7718290540634,
+                66.70015074190675,
+                96.13644909587548,
+                20.746779560035467,
+                13.632981140505823,
+                22.917377847089547,
+                27.11678860051081,
+                17453.650351109653,
+                71.76088229487512,
+                35.64585338809599,
+                12.24405213598068,
+                9.921036980027278
+              ]
+            },
+            {
+              "name": "Ridge",
+              "values": [
+                9.71871755841256,
+                42.225310211941505,
+                35.064847577868875,
+                8.963336403034194,
+                78.22714369071683,
+                10.940070157456473,
+                18.890907131633206,
+                14.29445874841306,
+                193.42566577107226,
+                47.94663004791356,
+                79.00209753890115,
+                18.364616846679994,
+                10.625075525407002,
+                17.772404749113353,
+                22.460914738112553,
+                14953.156601509669,
+                57.530496097422805,
+                26.085306689707036,
+                9.41598117226003,
+                7.685244864970826
+              ]
+            },
+            {
+              "name": "Nonlinear MLP",
+              "values": [
+                10.106281633583441,
+                50.37320117116073,
+                41.99092719928448,
+                9.797653715872613,
+                86.27780874756643,
+                11.545393432577052,
+                21.160765827856846,
+                16.035568176300362,
+                216.97723103173968,
+                56.51519363326582,
+                86.6911000713527,
+                19.243259666460624,
+                11.876294523785566,
+                19.475560694178,
+                24.97396522357995,
+                17044.285721779725,
+                64.34054858195674,
+                31.066614384761593,
+                10.521773243309307,
+                8.189106486959366
+              ]
+            },
+            {
+              "name": "Expanding ridge",
+              "values": [
+                8.447390367130605,
+                44.36493730300863,
+                37.24308535632772,
+                8.288444780953201,
+                72.3417428605359,
+                10.400564729016724,
+                17.573723870212483,
+                13.068083038071357,
+                187.47314629351465,
+                46.77217922200833,
+                73.13421308868841,
+                16.200225139313936,
+                10.071209657698484,
+                16.93241735824931,
+                21.249104837963323,
+                14081.568809940492,
+                52.428982133344896,
+                26.913289018427577,
+                8.782358690979773,
+                9.098391179144656
+              ]
+            }
+          ]
+        }
+      ],
+      "table": {
+        "columns": [
+          "Model / paired difference",
+          "Measure",
+          "Mean",
+          "Seed SD",
+          "MCSE of mean",
+          "Seed p10",
+          "Seed p90"
+        ],
+        "rows": [
+          [
+            "Training mean",
+            "MAE",
+            305.55213541060226,
+            1292.667786657071,
+            289.04930432894065,
+            4.580215648711626,
+            38.326825166033956
+          ],
+          [
+            "Training mean",
+            "RMSE",
+            892.1801783379475,
+            3802.1184738178495,
+            850.1795365964465,
+            10.124016582026893,
+            99.73468022886907
+          ],
+          [
+            "Training mean",
+            "QLIKE",
+            848.8782471596002,
+            3621.10623359632,
+            809.7039692069604,
+            11.726798075358843,
+            87.79745633292268
+          ],
+          [
+            "Lagged square",
+            "MAE",
+            343.9131665094248,
+            1448.5546529716812,
+            323.90666731682967,
+            6.040378343891142,
+            45.110077176177555
+          ],
+          [
+            "Lagged square",
+            "RMSE",
+            916.6474177257414,
+            3892.7894828850035,
+            870.4541905827122,
+            11.47112215905216,
+            111.39998709169448
+          ],
+          [
+            "Lagged square",
+            "QLIKE",
+            84882.1276864405,
+            374855.62272139685,
+            83820.26541530581,
+            143.16169681322475,
+            3314.7340191832827
+          ],
+          [
+            "Ridge",
+            "MAE",
+            253.1101644898647,
+            1066.0185949748616,
+            238.3690043642606,
+            4.269880044515306,
+            33.77421313413828
+          ],
+          [
+            "Ridge",
+            "RMSE",
+            783.0897913515353,
+            3335.563155588387,
+            745.8545959139341,
+            9.370716695337448,
+            90.44445436211842
+          ],
+          [
+            "Ridge",
+            "QLIKE",
+            9543.587686074425,
+            40038.12240365538,
+            8952.796338603071,
+            3.1666493449817943,
+            1158.6074028430955
+          ],
+          [
+            "Nonlinear MLP",
+            "MAE",
+            305.42108671193006,
+            1292.6932990587213,
+            289.0550090753766,
+            4.547942697029799,
+            38.09361317588789
+          ],
+          [
+            "Nonlinear MLP",
+            "RMSE",
+            892.0721984612637,
+            3802.140573766296,
+            850.184478295149,
+            10.075418841812358,
+            99.71971316739157
+          ],
+          [
+            "Nonlinear MLP",
+            "QLIKE",
+            6216.214140202533,
+            22874.207063799324,
+            5114.828192606115,
+            9.658440229217291,
+            2398.905236545127
+          ],
+          [
+            "Expanding ridge",
+            "MAE",
+            286.63074822333635,
+            1207.7307310606416,
+            270.05680131671113,
+            4.798497778058818,
+            38.64554525064338
+          ],
+          [
+            "Expanding ridge",
+            "RMSE",
+            738.1176149432542,
+            3140.993489438673,
+            702.347495926914,
+            8.748861858594857,
+            84.5681064091712
+          ],
+          [
+            "Expanding ridge",
+            "QLIKE",
+            967.0090895633733,
+            2752.940247679302,
+            615.5761531806027,
+            2.5578533742594067,
+            2400.143725132092
+          ],
+          [
+            "Ridge minus Training mean",
+            "MAE",
+            -52.44197092073748,
+            226.65285344748028,
+            50.681118760286346,
+            -4.552612031895668,
+            -0.2243445977939789
+          ],
+          [
+            "Ridge minus Training mean",
+            "RMSE",
+            -109.09038698641214,
+            466.5578136531613,
+            104.3254986762148,
+            -10.30730989700034,
+            -0.83992924356056
+          ],
+          [
+            "Ridge minus Training mean",
+            "QLIKE",
+            8694.709438914828,
+            40406.81904749342,
+            9035.239414472859,
+            -78.459774981038,
+            1137.5021314413211
+          ],
+          [
+            "Nonlinear MLP minus Training mean",
+            "MAE",
+            -0.1310486986721912,
+            0.11098111713098573,
+            0.02481613221237505,
+            -0.28356381788459417,
+            -0.029777326557589218
+          ],
+          [
+            "Nonlinear MLP minus Training mean",
+            "RMSE",
+            -0.10797987668362401,
+            0.10488346708654515,
+            0.023452656212137678,
+            -0.2549089210734117,
+            -0.02026268602645728
+          ],
+          [
+            "Nonlinear MLP minus Training mean",
+            "QLIKE",
+            5367.335893042933,
+            22530.60143721386,
+            5037.995638756464,
+            -27.527594154998585,
+            679.8205934300515
+          ],
+          [
+            "Expanding ridge minus Ridge",
+            "MAE",
+            33.52058373347162,
+            141.71382285454249,
+            31.688174125412026,
+            0.44920024770890843,
+            5.801079944023583
+          ],
+          [
+            "Expanding ridge minus Ridge",
+            "RMSE",
+            -44.97217640828118,
+            194.58084865723282,
+            43.50960047171712,
+            -5.8921126949185965,
+            1.4857943918631609
+          ],
+          [
+            "Expanding ridge minus Ridge",
+            "QLIKE",
+            -8576.578596511052,
+            40373.08716655579,
+            9027.696736594313,
+            -1151.8678327260136,
+            2396.714666682813
+          ],
+          [
+            "Frozen ridge",
+            "coverage",
+            0.18387978142076505,
+            0.09700287298371975,
+            0.02169050180043752,
+            0.09489981785063753,
+            0.2928961748633881
+          ],
+          [
+            "Frozen ridge",
+            "mean_interval_width",
+            1.6203948156101222,
+            0.6829283725259654,
+            0.15270742647313584,
+            1.016073891833493,
+            2.3063455096751677
+          ]
+        ]
+      },
+      "method": [
+        "Process seeds: 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119; 2,000 returns each. Stable/stress histories share innovations within each seed; independent streams across seeds. Seed 73 remains a separate illustrative trajectory.",
+        "Unchanged six causal features and train <1000, validation 1001-1199, calibration 1201-1449, test 1451-1999 (549 targets). Same Gaussian GARCH-like generator and day-1450 persistent stress as the trajectory cases.",
+        "Fixed grid [0.01, 1, 10, 100]; validation MSE selects within each dataset; first minimum wins. No test tuning or seed exclusion. Selected penalty frozen for all expanding refits. MLP settings and initialization seed fixed.",
+        "Equal weight per independent process seed. Sample SD (ddof=1), MCSE of mean = SD/sqrt(n), linear empirical p10/p90. Quantiles describe dataset variability, not confidence or prediction intervals. Regimes paired by innovations; days are not independent replicates.",
+        "Frozen ridge uses absolute calibration residuals at rank ceil((249+1)*0.9)=225; lower endpoint clipped at zero. Width is actual mean upper minus lower. Expanding ridge refits every 60 labels strictly before each forecast block, including earlier evaluation observations; its intervals are not assessed.",
+        "Paired table differences subtract the named baseline on the same seed; negative means lower error. QLIKE floor remains 1e-5. Per-seed scores, floor-hit fractions, alpha counts and paired coverage changes are in the study JSON.",
+        "Selected alpha frequencies: {'0.01': 3, '1': 1, '10': 2, '100': 14}"
+      ],
+      "limitations": [
+        "Twenty synthetic histories from one generator and one shift mechanism do not establish real-world forecasting accuracy or market edge. Local CPU/NumPy only; runtime, energy and monetary cost are unmeasured.",
+        "Fixed neural initialization isolates process variability; optimizer-seed variability and architecture search are not measured. These summaries evaluate the fixed selection procedure, not a single universal penalty.",
+        "Serial dependence and shift violate ordinary split-conformal exchangeability. Coverage is empirical, not a guaranteed 90%. Stress has alpha+beta=1 and no finite stationary unconditional variance.",
+        "Heavy-tailed seed errors and near-zero forecasts can dominate means and QLIKE. SD/MCSE and empirical quantiles from a small ensemble do not justify normal-theory significance claims. Regimes are paired, not 40 independent datasets."
       ],
       "reproduce": "python src/studio.py --out docs/study.json"
     }
@@ -2363,5 +3831,2923 @@
       "title": "Forecasting: principles and practice \u00b7 time-series cross-validation",
       "url": "https://otexts.com/fpp3/tscv.html"
     }
-  ]
+  ],
+  "repeated_seed_protocol": {
+    "process_seeds": [
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119
+    ],
+    "neural_seed": 53,
+    "selection_policy": "Fixed grid [0.01, 1, 10, 100]; validation MSE selects within each dataset; first minimum wins. No test tuning or seed exclusion. Selected penalty frozen for all expanding refits. MLP settings and initialization seed fixed.",
+    "aggregation": "Equal weight per independent process seed. Sample SD (ddof=1), MCSE of mean = SD/sqrt(n), linear empirical p10/p90. Quantiles describe dataset variability, not confidence or prediction intervals. Regimes paired by innovations; days are not independent replicates.",
+    "records": [
+      {
+        "seed": 100,
+        "regime": "stationary",
+        "selected_alpha": 0.01,
+        "validation_mse": {
+          "0.01": 0.23691945858240532,
+          "1": 0.23696091529843058,
+          "10": 0.23728033798186285,
+          "100": 0.23888118533708075
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.9526411657559198,
+        "interval_radius": 0.8092981810584218,
+        "mean_interval_width": 1.178090662428347,
+        "models": {
+          "Training mean": {
+            "mae": 0.356307080693665,
+            "rmse": 0.4810679386767157,
+            "qlike": -0.09204464772898224,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.41825210921097467,
+            "rmse": 0.6558971278258242,
+            "qlike": 148.42552542489182,
+            "floor_fraction": 0.0036429872495446266
+          },
+          "Ridge": {
+            "mae": 0.33268699371400023,
+            "rmse": 0.4693243784980441,
+            "qlike": -0.129761248129699,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.3122073858718088,
+            "rmse": 0.46909924397013464,
+            "qlike": -0.13744427398665438,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.32493297262200305,
+            "rmse": 0.4700719778373284,
+            "qlike": -0.12429684060300603,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 100,
+        "regime": "shift",
+        "selected_alpha": 0.01,
+        "validation_mse": {
+          "0.01": 0.23691945858240532,
+          "1": 0.23696091529843058,
+          "10": 0.23728033798186285,
+          "100": 0.23888118533708075
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.3551912568306011,
+        "interval_radius": 0.8092981810584218,
+        "mean_interval_width": 1.5385532196403877,
+        "models": {
+          "Training mean": {
+            "mae": 4.52715094524605,
+            "rmse": 10.157513898603673,
+            "qlike": 10.81858332337651,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 6.102701315626482,
+            "rmse": 11.580968167013195,
+            "qlike": 200.4536635965711,
+            "floor_fraction": 0.0018214936247723133
+          },
+          "Ridge": {
+            "mae": 4.282814819966409,
+            "rmse": 9.71871755841256,
+            "qlike": 4.824882932381275,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 4.475971250721822,
+            "rmse": 10.106281633583441,
+            "qlike": 8.88624428847694,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 4.381198429006213,
+            "rmse": 8.447390367130605,
+            "qlike": 2.4319257726081074,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 101,
+        "regime": "stationary",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.1734964069449132,
+          "1": 0.17347600775742555,
+          "10": 0.17334517688472204,
+          "100": 0.17320599876134157
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.9143897996357013,
+        "interval_radius": 0.7698562071612077,
+        "mean_interval_width": 1.2154583855093057,
+        "models": {
+          "Training mean": {
+            "mae": 0.4809047228057813,
+            "rmse": 0.8362060151741332,
+            "qlike": 0.22380773718961283,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.49503690253291227,
+            "rmse": 0.8778967243148607,
+            "qlike": 40.34356777600049,
+            "floor_fraction": 0.0018214936247723133
+          },
+          "Ridge": {
+            "mae": 0.43570287732473506,
+            "rmse": 0.7392630760591168,
+            "qlike": 0.05941274091786981,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.41511463304987684,
+            "rmse": 0.7973567528984828,
+            "qlike": 0.10105806425421542,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.4281305736060106,
+            "rmse": 0.7425900118838442,
+            "qlike": 0.049908570031680616,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 101,
+        "regime": "shift",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.1734964069449132,
+          "1": 0.17347600775742555,
+          "10": 0.17334517688472204,
+          "100": 0.17320599876134157
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.18032786885245902,
+        "interval_radius": 0.7698562071612077,
+        "mean_interval_width": 1.5322796547820345,
+        "models": {
+          "Training mean": {
+            "mae": 15.813073917237451,
+            "rmse": 50.39557121655571,
+            "qlike": 32.15084995535743,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 15.666793114816311,
+            "rmse": 41.04324171836386,
+            "qlike": 51.31534806867634,
+            "floor_fraction": 0.0018214936247723133
+          },
+          "Ridge": {
+            "mae": 13.243041689957531,
+            "rmse": 42.225310211941505,
+            "qlike": 3.703707637751725,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 15.751748581295951,
+            "rmse": 50.37320117116073,
+            "qlike": 51.07600916355841,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 16.178560913488173,
+            "rmse": 44.36493730300863,
+            "qlike": 11392.046929744442,
+            "floor_fraction": 0.020036429872495445
+          }
+        }
+      },
+      {
+        "seed": 102,
+        "regime": "stationary",
+        "selected_alpha": 0.01,
+        "validation_mse": {
+          "0.01": 0.2647274835274488,
+          "1": 0.2647442649065693,
+          "10": 0.26487150441681356,
+          "100": 0.26482274999363875
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.9726775956284153,
+        "interval_radius": 1.7521838462755925,
+        "mean_interval_width": 2.161635880745285,
+        "models": {
+          "Training mean": {
+            "mae": 0.41663802252783305,
+            "rmse": 0.6720409480574883,
+            "qlike": 0.17120084405811892,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.5213679578947695,
+            "rmse": 0.8719790645129087,
+            "qlike": 815.2253521938159,
+            "floor_fraction": 0.007285974499089253
+          },
+          "Ridge": {
+            "mae": 0.41702042273662826,
+            "rmse": 0.6700955907600415,
+            "qlike": 0.16383210358387046,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.3877535978595505,
+            "rmse": 0.673193504067381,
+            "qlike": 0.1943079103201562,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.42121375142187034,
+            "rmse": 0.6636292301181815,
+            "qlike": 0.12981222855050017,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 102,
+        "regime": "shift",
+        "selected_alpha": 0.01,
+        "validation_mse": {
+          "0.01": 0.2647274835274488,
+          "1": 0.2647442649065693,
+          "10": 0.26487150441681356,
+          "100": 0.26482274999363875
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.2550091074681239,
+        "interval_radius": 1.7521838462755925,
+        "mean_interval_width": 3.3763820171769554,
+        "models": {
+          "Training mean": {
+            "mae": 16.644818353743503,
+            "rmse": 42.20221723046607,
+            "qlike": 41.55227812845774,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 20.104990727576986,
+            "rmse": 46.00946058465637,
+            "qlike": 1327.4153667366445,
+            "floor_fraction": 0.0
+          },
+          "Ridge": {
+            "mae": 14.835815591382453,
+            "rmse": 35.064847577868875,
+            "qlike": 3.432699209560951,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 16.368215451411107,
+            "rmse": 41.99092719928448,
+            "qlike": 18.52708442224098,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 16.28428551824027,
+            "rmse": 37.24308535632772,
+            "qlike": 2074.984687228639,
+            "floor_fraction": 0.0018214936247723133
+          }
+        }
+      },
+      {
+        "seed": 103,
+        "regime": "stationary",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.8577700612636404,
+          "1": 0.8565418395528425,
+          "10": 0.848406457879104,
+          "100": 0.83294931456334
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.8907103825136612,
+        "interval_radius": 0.5023440973020827,
+        "mean_interval_width": 0.8295466913327586,
+        "models": {
+          "Training mean": {
+            "mae": 0.32139863930340345,
+            "rmse": 0.44734862964281247,
+            "qlike": -0.15183447354161517,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.3581054330768916,
+            "rmse": 0.567929104129745,
+            "qlike": 227.2079135677641,
+            "floor_fraction": 0.01092896174863388
+          },
+          "Ridge": {
+            "mae": 0.29896913381656226,
+            "rmse": 0.43191183927847365,
+            "qlike": -0.21237538730248998,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.27920827962344436,
+            "rmse": 0.43486209796121494,
+            "qlike": -0.20787498717778596,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.29767229406049783,
+            "rmse": 0.4329800692235604,
+            "qlike": -0.20981053991550092,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 103,
+        "regime": "shift",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.8577700612636404,
+          "1": 0.8565418395528425,
+          "10": 0.848406457879104,
+          "100": 0.83294931456334
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.23679417122040072,
+        "interval_radius": 0.5023440973020827,
+        "mean_interval_width": 0.9995066274241361,
+        "models": {
+          "Training mean": {
+            "mae": 4.586111726874467,
+            "rmse": 9.822540732835884,
+            "qlike": 12.543703012366391,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 5.479471598273081,
+            "rmse": 10.482508087402838,
+            "qlike": 656.6058423162062,
+            "floor_fraction": 0.0018214936247723133
+          },
+          "Ridge": {
+            "mae": 4.153467065455383,
+            "rmse": 8.963336403034194,
+            "qlike": 3.1693560581008455,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 4.555939524397352,
+            "rmse": 9.797653715872613,
+            "qlike": 11.408923069812296,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 4.716873932966069,
+            "rmse": 8.288444780953201,
+            "qlike": 2.3836253716844102,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 104,
+        "regime": "stationary",
+        "selected_alpha": 0.01,
+        "validation_mse": {
+          "0.01": 0.307872042326221,
+          "1": 0.30789443811455847,
+          "10": 0.308044270924585,
+          "100": 0.3082093938749759
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.8925318761384335,
+        "interval_radius": 0.8923847022718375,
+        "mean_interval_width": 1.369572258993227,
+        "models": {
+          "Training mean": {
+            "mae": 0.5203859140115639,
+            "rmse": 0.9052541747333143,
+            "qlike": 0.4386432491585717,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.6393208646841728,
+            "rmse": 1.109005394395654,
+            "qlike": 675.7520410949173,
+            "floor_fraction": 0.0036429872495446266
+          },
+          "Ridge": {
+            "mae": 0.5117079048034625,
+            "rmse": 0.8616820950800534,
+            "qlike": 0.3349288554684821,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.48870168985070417,
+            "rmse": 0.8894186533589122,
+            "qlike": 0.39624012506045886,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.5141850980996977,
+            "rmse": 0.8556830969489335,
+            "qlike": 0.32018035469070316,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 104,
+        "regime": "shift",
+        "selected_alpha": 0.01,
+        "validation_mse": {
+          "0.01": 0.307872042326221,
+          "1": 0.30789443811455847,
+          "10": 0.308044270924585,
+          "100": 0.3082093938749759
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.10564663023679417,
+        "interval_radius": 0.8923847022718375,
+        "mean_interval_width": 1.768872150118604,
+        "models": {
+          "Training mean": {
+            "mae": 33.447053124536126,
+            "rmse": 86.3908535677498,
+            "qlike": 76.39959132693764,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 39.03654801112347,
+            "rmse": 90.23843230684147,
+            "qlike": 1025.97234339165,
+            "floor_fraction": 0.0
+          },
+          "Ridge": {
+            "mae": 29.396515144552435,
+            "rmse": 78.22714369071683,
+            "qlike": 11501.37623857233,
+            "floor_fraction": 0.0036429872495446266
+          },
+          "Nonlinear MLP": {
+            "mae": 33.21886429090014,
+            "rmse": 86.27780874756643,
+            "qlike": 49.001028068390134,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 33.59832942841325,
+            "rmse": 72.3417428605359,
+            "qlike": 4.2345257501385,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 105,
+        "regime": "stationary",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.09816611485949349,
+          "1": 0.09811107887786127,
+          "10": 0.09773587570904427,
+          "100": 0.09688138417245919
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.907103825136612,
+        "interval_radius": 0.6419928409616085,
+        "mean_interval_width": 1.0129220525847362,
+        "models": {
+          "Training mean": {
+            "mae": 0.3710308228922365,
+            "rmse": 0.5841033191355486,
+            "qlike": -0.07729425947208786,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.4401201771104878,
+            "rmse": 0.8056958044951421,
+            "qlike": 230.20566949093273,
+            "floor_fraction": 0.0018214936247723133
+          },
+          "Ridge": {
+            "mae": 0.3584320730157518,
+            "rmse": 0.5804567907984755,
+            "qlike": -0.09822958433247655,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.32934621283639715,
+            "rmse": 0.5801949606499536,
+            "qlike": -0.09064023389574202,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.35024251978185894,
+            "rmse": 0.579837508474093,
+            "qlike": -0.10084942598415916,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 105,
+        "regime": "shift",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.09816611485949349,
+          "1": 0.09811107887786127,
+          "10": 0.09773587570904427,
+          "100": 0.09688138417245919
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.2459016393442623,
+        "interval_radius": 0.6419928409616085,
+        "mean_interval_width": 1.2772663898276841,
+        "models": {
+          "Training mean": {
+            "mae": 4.737282638258728,
+            "rmse": 11.606523624846865,
+            "qlike": 11.827710825579102,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 6.478762284460857,
+            "rmse": 14.355787534627003,
+            "qlike": 1085.5676352489827,
+            "floor_fraction": 0.0018214936247723133
+          },
+          "Ridge": {
+            "mae": 4.390830337892629,
+            "rmse": 10.940070157456473,
+            "qlike": 3.3962916067442213,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 4.670653549137713,
+            "rmse": 11.545393432577052,
+            "qlike": 10.451444034462835,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 4.869715213243041,
+            "rmse": 10.400564729016724,
+            "qlike": 5326.575066263126,
+            "floor_fraction": 0.0018214936247723133
+          }
+        }
+      },
+      {
+        "seed": 106,
+        "regime": "stationary",
+        "selected_alpha": 10,
+        "validation_mse": {
+          "0.01": 0.7295760222700137,
+          "1": 0.7295626177902627,
+          "10": 0.729515467187022,
+          "100": 0.7308759030754033
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.9726775956284153,
+        "interval_radius": 1.7777112037218887,
+        "mean_interval_width": 2.212679058364993,
+        "models": {
+          "Training mean": {
+            "mae": 0.4386726514836073,
+            "rmse": 0.795978803802435,
+            "qlike": 0.2991864116993533,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.5568392581735686,
+            "rmse": 0.9991462014834102,
+            "qlike": 150.69450834544645,
+            "floor_fraction": 0.007285974499089253
+          },
+          "Ridge": {
+            "mae": 0.43013519125864974,
+            "rmse": 0.7347509383709329,
+            "qlike": 0.16631639669920936,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.41743909850586575,
+            "rmse": 0.7862475331684246,
+            "qlike": 0.2636332794216061,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.50761242790986,
+            "rmse": 0.8662744092334786,
+            "qlike": 0.26914939657227693,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 106,
+        "regime": "shift",
+        "selected_alpha": 10,
+        "validation_mse": {
+          "0.01": 0.7295760222700137,
+          "1": 0.7295626177902627,
+          "10": 0.729515467187022,
+          "100": 0.7308759030754033
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.3879781420765027,
+        "interval_radius": 1.7777112037218887,
+        "mean_interval_width": 3.3662844983788927,
+        "models": {
+          "Training mean": {
+            "mae": 9.966299654633254,
+            "rmse": 21.19345334780392,
+            "qlike": 26.553695242640952,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 11.49247968195024,
+            "rmse": 22.256617208449985,
+            "qlike": 249.07692797955744,
+            "floor_fraction": 0.0
+          },
+          "Ridge": {
+            "mae": 8.620404538307259,
+            "rmse": 18.890907131633206,
+            "qlike": 3.9983402335460796,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 9.909180062428812,
+            "rmse": 21.160765827856846,
+            "qlike": 23.27020052081824,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 9.625682610625965,
+            "rmse": 17.573723870212483,
+            "qlike": 3.112331524182222,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 107,
+        "regime": "stationary",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.3291953200235826,
+          "1": 0.3291711099773188,
+          "10": 0.32900884617001325,
+          "100": 0.3284635702621377
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.8633879781420765,
+        "interval_radius": 0.5542355387180647,
+        "mean_interval_width": 0.9364423453236798,
+        "models": {
+          "Training mean": {
+            "mae": 0.3670892461752517,
+            "rmse": 0.5721207069299242,
+            "qlike": 0.15365436063226556,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.5068532579587268,
+            "rmse": 0.7609721340865129,
+            "qlike": 138.78511025983082,
+            "floor_fraction": 0.0036429872495446266
+          },
+          "Ridge": {
+            "mae": 0.38112377119716717,
+            "rmse": 0.5633737628641876,
+            "qlike": 0.12046305687418091,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.36407863872357465,
+            "rmse": 0.5714390984861408,
+            "qlike": 0.1604096859649983,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.38201394576822273,
+            "rmse": 0.563082036589302,
+            "qlike": 0.11675304772873403,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 107,
+        "regime": "shift",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.3291953200235826,
+          "1": 0.3291711099773188,
+          "10": 0.32900884617001325,
+          "100": 0.3284635702621377
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.09836065573770492,
+        "interval_radius": 0.5542355387180647,
+        "mean_interval_width": 1.1075159455415404,
+        "models": {
+          "Training mean": {
+            "mae": 8.878714656304096,
+            "rmse": 16.05918098553731,
+            "qlike": 26.309336481286298,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 10.993826406951927,
+            "rmse": 17.73680695885346,
+            "qlike": 364.40128093852854,
+            "floor_fraction": 0.0
+          },
+          "Ridge": {
+            "mae": 7.812056348116514,
+            "rmse": 14.29445874841306,
+            "qlike": 3.9602119716867388,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 8.844538012770487,
+            "rmse": 16.035568176300362,
+            "qlike": 24.69778916374186,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 8.337855534247527,
+            "rmse": 13.068083038071357,
+            "qlike": 3.1936698287308882,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 108,
+        "regime": "stationary",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.2516937471673646,
+          "1": 0.2516500751314181,
+          "10": 0.2512581863385336,
+          "100": 0.24821625219123616
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.7249544626593807,
+        "interval_radius": 0.4830582534881269,
+        "mean_interval_width": 0.8838115962448915,
+        "models": {
+          "Training mean": {
+            "mae": 0.4583621792914214,
+            "rmse": 0.732001392231268,
+            "qlike": 0.28823453987551745,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.5988268724396256,
+            "rmse": 0.9811021959355565,
+            "qlike": 347.925519995735,
+            "floor_fraction": 0.0036429872495446266
+          },
+          "Ridge": {
+            "mae": 0.4750278570902442,
+            "rmse": 0.7285060427238172,
+            "qlike": 0.26546870730514427,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.44235473751488547,
+            "rmse": 0.7339550405652111,
+            "qlike": 0.3119019774069832,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.46836708658825,
+            "rmse": 0.7267611841973556,
+            "qlike": 0.2605540014383194,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 108,
+        "regime": "shift",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.2516937471673646,
+          "1": 0.2516500751314181,
+          "10": 0.2512581863385336,
+          "100": 0.24821625219123616
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.06375227686703097,
+        "interval_radius": 0.4830582534881269,
+        "mean_interval_width": 0.9650065589388,
+        "models": {
+          "Training mean": {
+            "mae": 82.24477353951376,
+            "rmse": 217.15079238240173,
+            "qlike": 190.37824138678639,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 99.77183966166342,
+            "rmse": 248.7718290540634,
+            "qlike": 1642.5285171817313,
+            "floor_fraction": 0.0018214936247723133
+          },
+          "Ridge": {
+            "mae": 73.17349504041029,
+            "rmse": 193.42566577107226,
+            "qlike": 5.043734121061661,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 81.96635314077692,
+            "rmse": 216.97723103173968,
+            "qlike": 125.43264576490252,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 84.07048765071379,
+            "rmse": 187.47314629351465,
+            "qlike": 4.369850555644983,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 109,
+        "regime": "stationary",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.20961053836763108,
+          "1": 0.20956079196606503,
+          "10": 0.20912858310733629,
+          "100": 0.20590579074177948
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.848816029143898,
+        "interval_radius": 0.6473192410253741,
+        "mean_interval_width": 1.054130146377209,
+        "models": {
+          "Training mean": {
+            "mae": 0.4316719328153481,
+            "rmse": 0.747412919969905,
+            "qlike": 0.20736576559555642,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.530226887442303,
+            "rmse": 0.9736595946030854,
+            "qlike": 222.0937992635953,
+            "floor_fraction": 0.007285974499089253
+          },
+          "Ridge": {
+            "mae": 0.43104555302476727,
+            "rmse": 0.7039126114746781,
+            "qlike": 0.1099949646777213,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.4009513408314346,
+            "rmse": 0.7178916624486952,
+            "qlike": 0.14518248228799807,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.4237008691715498,
+            "rmse": 0.7046696853892713,
+            "qlike": 0.1071740141288298,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 109,
+        "regime": "shift",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.20961053836763108,
+          "1": 0.20956079196606503,
+          "10": 0.20912858310733629,
+          "100": 0.20590579074177948
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.10746812386156648,
+        "interval_radius": 0.6473192410253741,
+        "mean_interval_width": 1.2918659161121577,
+        "models": {
+          "Training mean": {
+            "mae": 19.316894865667503,
+            "rmse": 56.76307142109955,
+            "qlike": 46.40856197687356,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 23.572975114870452,
+            "rmse": 66.70015074190675,
+            "qlike": 538.3249747689831,
+            "floor_fraction": 0.0036429872495446266
+          },
+          "Ridge": {
+            "mae": 16.592892018808424,
+            "rmse": 47.94663004791356,
+            "qlike": 3.495596842888427,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 18.973892900080646,
+            "rmse": 56.51519363326582,
+            "qlike": 17.71968975381525,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 17.735686414760085,
+            "rmse": 46.77217922200833,
+            "qlike": 490.0259633089782,
+            "floor_fraction": 0.0018214936247723133
+          }
+        }
+      },
+      {
+        "seed": 110,
+        "regime": "stationary",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.1996991579806789,
+          "1": 0.19962412330536822,
+          "10": 0.1991723916592653,
+          "100": 0.19862117392410616
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.8834244080145719,
+        "interval_radius": 0.7224347437615596,
+        "mean_interval_width": 1.1507757738288389,
+        "models": {
+          "Training mean": {
+            "mae": 0.46956896197379006,
+            "rmse": 0.8006154292580272,
+            "qlike": 0.25750921498656193,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.5437222276315494,
+            "rmse": 0.9811213466496624,
+            "qlike": 496.3218272014706,
+            "floor_fraction": 0.01092896174863388
+          },
+          "Ridge": {
+            "mae": 0.4605915673418379,
+            "rmse": 0.7670815099100176,
+            "qlike": 0.16410896140543602,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.4315317117566864,
+            "rmse": 0.7855824077085591,
+            "qlike": 0.21500275425902438,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.45777342696051515,
+            "rmse": 0.7649417594430298,
+            "qlike": 0.16110130902502653,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 110,
+        "regime": "shift",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.1996991579806789,
+          "1": 0.19962412330536822,
+          "10": 0.1991723916592653,
+          "100": 0.19862117392410616
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.12932604735883424,
+        "interval_radius": 0.7224347437615596,
+        "mean_interval_width": 1.4353823353294366,
+        "models": {
+          "Training mean": {
+            "mae": 30.63565795564805,
+            "rmse": 86.68844554514301,
+            "qlike": 71.37197576101924,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 37.120007060512755,
+            "rmse": 96.13644909587548,
+            "qlike": 2805.3574683716724,
+            "floor_fraction": 0.0036429872495446266
+          },
+          "Ridge": {
+            "mae": 27.326103596106687,
+            "rmse": 79.00209753890115,
+            "qlike": 4.787171033835312,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 30.609434512366196,
+            "rmse": 86.6911000713527,
+            "qlike": 100953.29164974492,
+            "floor_fraction": 0.0036429872495446266
+          },
+          "Expanding ridge": {
+            "mae": 32.560971021654716,
+            "rmse": 73.13421308868841,
+            "qlike": 3.822411814336143,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 111,
+        "regime": "stationary",
+        "selected_alpha": 10,
+        "validation_mse": {
+          "0.01": 0.207998840529434,
+          "1": 0.2079841348341656,
+          "10": 0.20794152013556574,
+          "100": 0.20842235406925397
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.9143897996357013,
+        "interval_radius": 0.8543855774119942,
+        "mean_interval_width": 1.276287170909443,
+        "models": {
+          "Training mean": {
+            "mae": 0.42672368584692294,
+            "rmse": 0.6290703053158894,
+            "qlike": 0.1425087126028135,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.525610720422627,
+            "rmse": 0.8446895505846727,
+            "qlike": 276.2963230201271,
+            "floor_fraction": 0.0036429872495446266
+          },
+          "Ridge": {
+            "mae": 0.4137870156468516,
+            "rmse": 0.6132109093439831,
+            "qlike": 0.10131157071240242,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.3869983621028456,
+            "rmse": 0.6181185943855333,
+            "qlike": 0.12270903038164241,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.41567864111955044,
+            "rmse": 0.6143400708229293,
+            "qlike": 0.1021735955303798,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 111,
+        "regime": "shift",
+        "selected_alpha": 10,
+        "validation_mse": {
+          "0.01": 0.207998840529434,
+          "1": 0.2079841348341656,
+          "10": 0.20794152013556574,
+          "100": 0.20842235406925397
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.2677595628415301,
+        "interval_radius": 0.8543855774119942,
+        "mean_interval_width": 1.4699912544333589,
+        "models": {
+          "Training mean": {
+            "mae": 9.173232360021894,
+            "rmse": 19.321720825657703,
+            "qlike": 21.153074555104585,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 11.185608972666328,
+            "rmse": 20.746779560035467,
+            "qlike": 563.4369110814948,
+            "floor_fraction": 0.0
+          },
+          "Ridge": {
+            "mae": 8.693579664804844,
+            "rmse": 18.364616846679994,
+            "qlike": 179296.6619634892,
+            "floor_fraction": 0.16029143897996356
+          },
+          "Nonlinear MLP": {
+            "mae": 9.116912178597275,
+            "rmse": 19.243259666460624,
+            "qlike": 20.261357011478953,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 9.14441265139718,
+            "rmse": 16.200225139313936,
+            "qlike": 3.192267441677797,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 112,
+        "regime": "stationary",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.3226128535047184,
+          "1": 0.32260642231937786,
+          "10": 0.32254980825624796,
+          "100": 0.32212259986205033
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.9471766848816029,
+        "interval_radius": 0.9466194580481474,
+        "mean_interval_width": 1.3195970092325482,
+        "models": {
+          "Training mean": {
+            "mae": 0.3669905244360452,
+            "rmse": 0.5279511336287248,
+            "qlike": -0.00904383470384071,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.45516450922612184,
+            "rmse": 0.7218910788700661,
+            "qlike": 81.99962663634541,
+            "floor_fraction": 0.0018214936247723133
+          },
+          "Ridge": {
+            "mae": 0.35922327465321885,
+            "rmse": 0.5244537548621744,
+            "qlike": -0.03511185045846911,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.3350180094512156,
+            "rmse": 0.5252548559293717,
+            "qlike": -0.020987820641815577,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.3621803215858834,
+            "rmse": 0.524101449567103,
+            "qlike": -0.03422308283274777,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 112,
+        "regime": "shift",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.3226128535047184,
+          "1": 0.32260642231937786,
+          "10": 0.32254980825624796,
+          "100": 0.32212259986205033
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.2550091074681239,
+        "interval_radius": 0.9466194580481474,
+        "mean_interval_width": 1.8511700599216134,
+        "models": {
+          "Training mean": {
+            "mae": 5.888373004559886,
+            "rmse": 11.949379753764983,
+            "qlike": 15.170532219381215,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 7.598126083273026,
+            "rmse": 13.632981140505823,
+            "qlike": 149.76252692441966,
+            "floor_fraction": 0.0
+          },
+          "Ridge": {
+            "mae": 5.337331728186132,
+            "rmse": 10.625075525407002,
+            "qlike": 3.300487091713153,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 5.8139796804816175,
+            "rmse": 11.876294523785566,
+            "qlike": 11.342766311172456,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 5.842094095083615,
+            "rmse": 10.071209657698484,
+            "qlike": 2.7711011396820098,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 113,
+        "regime": "stationary",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.32905696388135397,
+          "1": 0.32901726090696554,
+          "10": 0.3286799814607746,
+          "100": 0.3264119775423338
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.9107468123861566,
+        "interval_radius": 0.7666675614842463,
+        "mean_interval_width": 1.1905010889503964,
+        "models": {
+          "Training mean": {
+            "mae": 0.4123697844480637,
+            "rmse": 0.6292433243452508,
+            "qlike": 0.13604096439810692,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.5396655482564715,
+            "rmse": 0.8906680226058126,
+            "qlike": 158.85482135100438,
+            "floor_fraction": 0.0018214936247723133
+          },
+          "Ridge": {
+            "mae": 0.4102371420320814,
+            "rmse": 0.6318982060012709,
+            "qlike": 0.14163193430597246,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.382251123272836,
+            "rmse": 0.6367160559086031,
+            "qlike": 0.18697115807121548,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.41214729516482557,
+            "rmse": 0.6348147159783565,
+            "qlike": 0.14744212115582095,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 113,
+        "regime": "shift",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.32905696388135397,
+          "1": 0.32901726090696554,
+          "10": 0.3286799814607746,
+          "100": 0.3264119775423338
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.12750455373406194,
+        "interval_radius": 0.7666675614842463,
+        "mean_interval_width": 1.52824921073825,
+        "models": {
+          "Training mean": {
+            "mae": 8.85737606912532,
+            "rmse": 19.634590671206052,
+            "qlike": 19.92586302956737,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 11.48979028927152,
+            "rmse": 22.917377847089547,
+            "qlike": 153.24669199255834,
+            "floor_fraction": 0.0
+          },
+          "Ridge": {
+            "mae": 7.8868029077244675,
+            "rmse": 17.772404749113353,
+            "qlike": 3.7247855803540553,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 8.66150585913671,
+            "rmse": 19.475560694178,
+            "qlike": 12.036279723163657,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 8.434274299189084,
+            "rmse": 16.93241735824931,
+            "qlike": 3.208025639095849,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 114,
+        "regime": "stationary",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.5757577626940518,
+          "1": 0.5757571594251145,
+          "10": 0.5757420402900556,
+          "100": 0.5754559866330837
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.9253187613843351,
+        "interval_radius": 1.1263873724825493,
+        "mean_interval_width": 1.5366382616915604,
+        "models": {
+          "Training mean": {
+            "mae": 0.43261545833988335,
+            "rmse": 0.6953171821587927,
+            "qlike": 0.19264342067509155,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.5293700713086071,
+            "rmse": 0.8885909153725646,
+            "qlike": 469.51572604099107,
+            "floor_fraction": 0.0036429872495446266
+          },
+          "Ridge": {
+            "mae": 0.42598393501776294,
+            "rmse": 0.6767219275320856,
+            "qlike": 0.12505252627488317,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.3994320224452929,
+            "rmse": 0.6853693878786077,
+            "qlike": 0.15749984716454665,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.434023290409039,
+            "rmse": 0.6753970877813614,
+            "qlike": 0.11990820142192012,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 114,
+        "regime": "shift",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.5757577626940518,
+          "1": 0.5757571594251145,
+          "10": 0.5757420402900556,
+          "100": 0.5754559866330837
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.2859744990892532,
+        "interval_radius": 1.1263873724825493,
+        "mean_interval_width": 2.1885745109303074,
+        "models": {
+          "Training mean": {
+            "mae": 11.009681668439502,
+            "rmse": 25.043142410813594,
+            "qlike": 27.650694952370987,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 13.39568516256404,
+            "rmse": 27.11678860051081,
+            "qlike": 7899.122976487704,
+            "floor_fraction": 0.0036429872495446266
+          },
+          "Ridge": {
+            "mae": 9.873796840333105,
+            "rmse": 22.460914738112553,
+            "qlike": 4.028381787037282,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 10.941186543040986,
+            "rmse": 24.97396522357995,
+            "qlike": 25.03585544500736,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 10.916419544064938,
+            "rmse": 21.249104837963323,
+            "qlike": 3.2135898006448773,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 115,
+        "regime": "stationary",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.1888386351952484,
+          "1": 0.1888212410976423,
+          "10": 0.18868367583520088,
+          "100": 0.18790094946696764
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.6666666666666666,
+        "interval_radius": 0.5352212321758388,
+        "mean_interval_width": 0.9754207908911664,
+        "models": {
+          "Training mean": {
+            "mae": 0.9204393633847864,
+            "rmse": 2.323368920802468,
+            "qlike": 1.878772864027315,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 1.1450969217423246,
+            "rmse": 2.4766741592501718,
+            "qlike": 494.10944362390836,
+            "floor_fraction": 0.0018214936247723133
+          },
+          "Ridge": {
+            "mae": 0.8461480489727733,
+            "rmse": 2.0126923941820256,
+            "qlike": 0.7735870123792585,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.9026725476506552,
+            "rmse": 2.2907690962374367,
+            "qlike": 1.5228156362688703,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.8829999840649067,
+            "rmse": 2.0074461125361363,
+            "qlike": 0.7440622100533741,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 115,
+        "regime": "shift",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.1888386351952484,
+          "1": 0.1888212410976423,
+          "10": 0.18868367583520088,
+          "100": 0.18790094946696764
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.0273224043715847,
+        "interval_radius": 0.5352212321758388,
+        "mean_interval_width": 1.0702218928472191,
+        "models": {
+          "Training mean": {
+            "mae": 5796.975767029588,
+            "rmse": 17044.299430167444,
+            "qlike": 16232.279052140211,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 6497.47327979438,
+            "rmse": 17453.650351109653,
+            "qlike": 1677449.999390566,
+            "floor_fraction": 0.0
+          },
+          "Ridge": {
+            "mae": 4781.633040420845,
+            "rmse": 14953.156601509669,
+            "qlike": 9.410865539829102,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 5796.955438400841,
+            "rmse": 17044.285721779725,
+            "qlike": 22860.158553566824,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 5417.134421496407,
+            "rmse": 14081.568809940492,
+            "qlike": 8.34939972008232,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 116,
+        "regime": "stationary",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.20346906482420035,
+          "1": 0.20336032979285382,
+          "10": 0.2025413636779353,
+          "100": 0.19973361923227
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.8706739526411658,
+        "interval_radius": 0.7107022714129894,
+        "mean_interval_width": 1.1391921864873698,
+        "models": {
+          "Training mean": {
+            "mae": 0.4309937191362677,
+            "rmse": 0.7131965068049552,
+            "qlike": 0.2190498168950107,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.5577338234972089,
+            "rmse": 0.9394358634191913,
+            "qlike": 128.53668943052708,
+            "floor_fraction": 0.0018214936247723133
+          },
+          "Ridge": {
+            "mae": 0.431884231845698,
+            "rmse": 0.6803669406034697,
+            "qlike": 0.12099479252568253,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.4034664413685768,
+            "rmse": 0.6956747257319442,
+            "qlike": 0.15625478151940456,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.4213425676378974,
+            "rmse": 0.6762519692223385,
+            "qlike": 0.10857338408698793,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 116,
+        "regime": "shift",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.20346906482420035,
+          "1": 0.20336032979285382,
+          "10": 0.2025413636779353,
+          "100": 0.19973361923227
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.1384335154826958,
+        "interval_radius": 0.7107022714129894,
+        "mean_interval_width": 1.4087834944778577,
+        "models": {
+          "Training mean": {
+            "mae": 24.2711062279368,
+            "rmse": 64.3615395233506,
+            "qlike": 60.91893125683227,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 30.799348361654165,
+            "rmse": 71.76088229487512,
+            "qlike": 395.0223458879874,
+            "floor_fraction": 0.0
+          },
+          "Ridge": {
+            "mae": 21.474989092103115,
+            "rmse": 57.530496097422805,
+            "qlike": 4.167373898057149,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 24.204081945578157,
+            "rmse": 64.34054858195674,
+            "qlike": 74.68411963335772,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 23.083407842634653,
+            "rmse": 52.428982133344896,
+            "qlike": 3.5673171707272577,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 117,
+        "regime": "stationary",
+        "selected_alpha": 1,
+        "validation_mse": {
+          "0.01": 2.032762183696042,
+          "1": 2.032748594338022,
+          "10": 2.0335639101480285,
+          "100": 2.0450759782473193
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.9289617486338798,
+        "interval_radius": 0.9945246838288381,
+        "mean_interval_width": 1.4102341442115156,
+        "models": {
+          "Training mean": {
+            "mae": 0.42443000900443417,
+            "rmse": 0.6191535769249992,
+            "qlike": 0.14832408246140757,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.5306681132451827,
+            "rmse": 0.8434008000043667,
+            "qlike": 101.75633495672055,
+            "floor_fraction": 0.00546448087431694
+          },
+          "Ridge": {
+            "mae": 0.4178711614237511,
+            "rmse": 0.6180804764844434,
+            "qlike": 0.12965667194026428,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.3962662722205041,
+            "rmse": 0.6235618549533253,
+            "qlike": 0.17708740500702122,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.42658115340318864,
+            "rmse": 0.6161685590106147,
+            "qlike": 0.12252807796012433,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 117,
+        "regime": "shift",
+        "selected_alpha": 1,
+        "validation_mse": {
+          "0.01": 2.032762183696042,
+          "1": 2.032748594338022,
+          "10": 2.0335639101480285,
+          "100": 2.0450759782473193
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.12021857923497267,
+        "interval_radius": 0.9945246838288381,
+        "mean_interval_width": 1.95150684455752,
+        "models": {
+          "Training mean": {
+            "mae": 14.264155884384019,
+            "rmse": 31.384803504992078,
+            "qlike": 33.61037454704398,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 17.870697590987056,
+            "rmse": 35.64585338809599,
+            "qlike": 710.3749689810013,
+            "floor_fraction": 0.0
+          },
+          "Ridge": {
+            "mae": 14.27154633408204,
+            "rmse": 26.085306689707036,
+            "qlike": 3.3858332710306693,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 13.93430129416965,
+            "rmse": 31.066614384761593,
+            "qlike": 13.380807888317944,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 15.306709543596043,
+            "rmse": 26.913289018427577,
+            "qlike": 3.3872133479705973,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 118,
+        "regime": "stationary",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.32666002488684054,
+          "1": 0.32660278658472297,
+          "10": 0.3262758919334625,
+          "100": 0.3251531114571741
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.8561020036429873,
+        "interval_radius": 0.5095512662797004,
+        "mean_interval_width": 0.9004985226460593,
+        "models": {
+          "Training mean": {
+            "mae": 0.3725517925775085,
+            "rmse": 0.4700374875688756,
+            "qlike": -0.02153835635309779,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.4161648859403634,
+            "rmse": 0.6373426117482612,
+            "qlike": 150.55543061280954,
+            "floor_fraction": 0.0036429872495446266
+          },
+          "Ridge": {
+            "mae": 0.3465321745749252,
+            "rmse": 0.46608700056060304,
+            "qlike": -0.041355384068839075,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.3149732258338164,
+            "rmse": 0.45997568174598885,
+            "qlike": -0.038759213481272904,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.33871450220665544,
+            "rmse": 0.46409495108964477,
+            "qlike": -0.042580173635442135,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 118,
+        "regime": "shift",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.32666002488684054,
+          "1": 0.32660278658472297,
+          "10": 0.3262758919334625,
+          "100": 0.3251531114571741
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.14571948998178508,
+        "interval_radius": 0.5095512662797004,
+        "mean_interval_width": 1.0179146989900882,
+        "models": {
+          "Training mean": {
+            "mae": 5.707502756700137,
+            "rmse": 10.630871361980146,
+            "qlike": 12.247788849388812,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 7.2212735052156685,
+            "rmse": 12.24405213598068,
+            "qlike": 290.8143224771422,
+            "floor_fraction": 0.0
+          },
+          "Ridge": {
+            "mae": 5.151505635056893,
+            "rmse": 9.41598117226003,
+            "qlike": 3.142288926910332,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 5.59364579642967,
+            "rmse": 10.521773243309307,
+            "qlike": 9.74423977818844,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 5.586011232814945,
+            "rmse": 8.782358690979773,
+            "qlike": 2.740044515074505,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 119,
+        "regime": "stationary",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.8407414696563479,
+          "1": 0.8404415507130107,
+          "10": 0.8383914028591831,
+          "100": 0.8331229705275613
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.9107468123861566,
+        "interval_radius": 0.6338717660830203,
+        "mean_interval_width": 1.0067840128405807,
+        "models": {
+          "Training mean": {
+            "mae": 0.3923578792404469,
+            "rmse": 0.5488000244383818,
+            "qlike": -0.03668993884006089,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 0.4172654637346158,
+            "rmse": 0.7262913231115367,
+            "qlike": 61.59619595259131,
+            "floor_fraction": 0.00546448087431694
+          },
+          "Ridge": {
+            "mae": 0.3517901645870084,
+            "rmse": 0.5418974080145107,
+            "qlike": -0.07664653017759436,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 0.3191332859386472,
+            "rmse": 0.5336958890253484,
+            "qlike": -0.06364481648665374,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 0.34845704051237647,
+            "rmse": 0.5405932781872044,
+            "qlike": -0.07600979723269248,
+            "floor_fraction": 0.0
+          }
+        }
+      },
+      {
+        "seed": 119,
+        "regime": "shift",
+        "selected_alpha": 100,
+        "validation_mse": {
+          "0.01": 0.8407414696563479,
+          "1": 0.8404415507130107,
+          "10": 0.8383914028591831,
+          "100": 0.8331229705275613
+        },
+        "counts": {
+          "train": 979,
+          "validation": 199,
+          "calibration": 249,
+          "test": 549
+        },
+        "coverage": 0.14389799635701275,
+        "interval_radius": 0.6338717660830203,
+        "mean_interval_width": 1.2625690320356,
+        "models": {
+          "Training mean": {
+            "mae": 4.0976818336265985,
+            "rmse": 8.547924586695254,
+            "qlike": 8.294104221421607,
+            "floor_fraction": 0.0
+          },
+          "Lagged square": {
+            "mae": 5.409125450660151,
+            "rmse": 9.921036980027278,
+            "qlike": 83.75422581247051,
+            "floor_fraction": 0.0018214936247723133
+          },
+          "Ridge": {
+            "mae": 4.05326098320358,
+            "rmse": 7.685244864970826,
+            "qlike": 2.743511684494577,
+            "floor_fraction": 0.0
+          },
+          "Nonlinear MLP": {
+            "mae": 3.855891264039047,
+            "rmse": 8.189106486959366,
+            "qlike": 3.8761166980177384,
+            "floor_fraction": 0.0
+          },
+          "Expanding ridge": {
+            "mae": 4.807567094180234,
+            "rmse": 9.098391179144656,
+            "qlike": 2.57184532999844,
+            "floor_fraction": 0.0
+          }
+        }
+      }
+    ],
+    "regimes": {
+      "stationary": {
+        "models": {
+          "Training mean": {
+            "mae": {
+              "n": 20,
+              "mean": 0.44057511951941297,
+              "sd": 0.12255815786804923,
+              "mcse_mean": 0.027404837219010877,
+              "median": 0.4255768474256786,
+              "p10": 0.36592218006180716,
+              "p90": 0.4848528419263596,
+              "min": 0.32139863930340345,
+              "max": 0.9204393633847864
+            },
+            "rmse": {
+              "n": 20,
+              "mean": 0.7365144369799955,
+              "sd": 0.3944613230308228,
+              "mcse_mean": 0.08820423327914231,
+              "median": 0.6506421362013695,
+              "p10": 0.4799648935659317,
+              "p90": 0.8431108311300514,
+              "min": 0.44734862964281247,
+              "max": 2.323368920802468
+            },
+            "qlike": {
+              "n": 20,
+              "mean": 0.21842482368078092,
+              "sd": 0.4191609541202438,
+              "mcse_mean": 0.09372723869265356,
+              "median": 0.16242760234519224,
+              "p10": -0.07876929829777729,
+              "p90": 0.3131320954452753,
+              "min": -0.15183447354161517,
+              "max": 1.878772864027315
+            },
+            "floor_fraction": {
+              "n": 20,
+              "mean": 0.0,
+              "sd": 0.0,
+              "mcse_mean": 0.0,
+              "median": 0.0,
+              "p10": 0.0,
+              "p90": 0.0,
+              "min": 0.0,
+              "max": 0.0
+            }
+          },
+          "Lagged square": {
+            "mae": {
+              "n": 20,
+              "mean": 0.5362706002764752,
+              "sd": 0.15881993698282668,
+              "mcse_mean": 0.03551321752758333,
+              "median": 0.5274903958656171,
+              "p10": 0.4171554059551906,
+              "p90": 0.6028762716640804,
+              "min": 0.3581054330768916,
+              "max": 1.1450969217423246
+            },
+            "rmse": {
+              "n": 20,
+              "mean": 0.9276694508699501,
+              "sd": 0.389396377218435,
+              "mcse_mean": 0.08707167696525711,
+              "median": 0.8749378944138847,
+              "p10": 0.654041676218068,
+              "p90": 1.0101321207746348,
+              "min": 0.567929104129745,
+              "max": 2.4766741592501718
+            },
+            "qlike": {
+              "n": 20,
+              "mean": 270.8100713119713,
+              "sd": 213.69618379559628,
+              "mcse_mean": 47.783919349924226,
+              "median": 190.47431030729985,
+              "p10": 79.95928356797,
+              "p90": 514.2648485908155,
+              "min": 40.34356777600049,
+              "max": 815.2253521938159
+            },
+            "floor_fraction": {
+              "n": 20,
+              "mean": 0.004553734061930784,
+              "sd": 0.0028648361226122007,
+              "mcse_mean": 0.0006405968314557803,
+              "median": 0.0036429872495446266,
+              "p10": 0.0018214936247723133,
+              "p90": 0.007650273224043721,
+              "min": 0.0018214936247723133,
+              "max": 0.01092896174863388
+            }
+          },
+          "Ridge": {
+            "mae": {
+              "n": 20,
+              "mean": 0.42679502470389385,
+              "sd": 0.11142105583283508,
+              "mcse_mean": 0.024914505496701867,
+              "median": 0.41744579208018967,
+              "p10": 0.3451476564888327,
+              "p90": 0.4786958618615661,
+              "min": 0.29896913381656226,
+              "max": 0.8461480489727733
+            },
+            "rmse": {
+              "n": 20,
+              "mean": 0.7007883826701201,
+              "sd": 0.3282038571169232,
+              "mcse_mean": 0.07338861349910683,
+              "median": 0.6509968983806562,
+              "p10": 0.4690006407043,
+              "p90": 0.7765415684270213,
+              "min": 0.43191183927847365,
+              "max": 2.0126923941820256
+            },
+            "qlike": {
+              "n": 20,
+              "mean": 0.10916401553004047,
+              "sd": 0.20674757865062163,
+              "mcse_mean": 0.04623016400462742,
+              "median": 0.12072892469993171,
+              "p10": -0.1013827507121988,
+              "p90": 0.27241472212147816,
+              "min": -0.21237538730248998,
+              "max": 0.7735870123792585
+            },
+            "floor_fraction": {
+              "n": 20,
+              "mean": 0.0,
+              "sd": 0.0,
+              "mcse_mean": 0.0,
+              "median": 0.0,
+              "p10": 0.0,
+              "p90": 0.0,
+              "min": 0.0,
+              "max": 0.0
+            }
+          },
+          "Nonlinear MLP": {
+            "mae": {
+              "n": 20,
+              "mean": 0.40544493083543093,
+              "sd": 0.12783806102906006,
+              "mcse_mean": 0.0285854594572745,
+              "median": 0.3920099350400273,
+              "p10": 0.31469664183761564,
+              "p90": 0.4469894327484674,
+              "min": 0.27920827962344436,
+              "max": 0.9026725476506552
+            },
+            "rmse": {
+              "n": 20,
+              "mean": 0.7254188548539636,
+              "sd": 0.3884530952980774,
+              "mcse_mean": 0.0868607527156705,
+              "median": 0.654954779987992,
+              "p10": 0.46818688774772005,
+              "p90": 0.8065629429445259,
+              "min": 0.43486209796121494,
+              "max": 2.2907690962374367
+            },
+            "qlike": {
+              "n": 20,
+              "mean": 0.17758613958591082,
+              "sd": 0.352430318340064,
+              "mcse_mean": 0.0788058149140274,
+              "median": 0.1568773143419756,
+              "p10": -0.09532063790483325,
+              "p90": 0.3203357921723309,
+              "min": -0.20787498717778596,
+              "max": 1.5228156362688703
+            },
+            "floor_fraction": {
+              "n": 20,
+              "mean": 0.0,
+              "sd": 0.0,
+              "mcse_mean": 0.0,
+              "median": 0.0,
+              "p10": 0.0,
+              "p90": 0.0,
+              "min": 0.0,
+              "max": 0.0
+            }
+          },
+          "Expanding ridge": {
+            "mae": {
+              "n": 20,
+              "mean": 0.4308984881047331,
+              "sd": 0.12098053329390045,
+              "mcse_mean": 0.02705206963993379,
+              "median": 0.4212781595298839,
+              "p10": 0.3373363492481902,
+              "p90": 0.5082696949288438,
+              "min": 0.29767229406049783,
+              "max": 0.8829999840649067
+            },
+            "rmse": {
+              "n": 20,
+              "mean": 0.7061864581767033,
+              "sd": 0.32909479143688997,
+              "mcse_mean": 0.07358783246940016,
+              "median": 0.649221973048269,
+              "p10": 0.46947427516256,
+              "p90": 0.8567422281773881,
+              "min": 0.4329800692235604,
+              "max": 2.0074461125361363
+            },
+            "qlike": {
+              "n": 20,
+              "mean": 0.10857753260855647,
+              "sd": 0.20298637804358746,
+              "mcse_mean": 0.04538913398119323,
+              "median": 0.11266321590786098,
+              "p10": -0.10319416744604384,
+              "p90": 0.27425249238411964,
+              "min": -0.20981053991550092,
+              "max": 0.7440622100533741
+            },
+            "floor_fraction": {
+              "n": 20,
+              "mean": 0.0,
+              "sd": 0.0,
+              "mcse_mean": 0.0,
+              "median": 0.0,
+              "p10": 0.0,
+              "p90": 0.0,
+              "min": 0.0,
+              "max": 0.0
+            }
+          }
+        },
+        "paired_differences": {
+          "Ridge minus Training mean": {
+            "mae": {
+              "n": 20,
+              "mean": -0.013780094815519167,
+              "sd": 0.020939927898047907,
+              "mcse_mean": 0.004682310222397941,
+              "median": -0.008607734716529453,
+              "p10": -0.041031127736199276,
+              "p90": 0.0022049139406788397,
+              "min": -0.07429131441201309,
+              "max": 0.016665677798822776,
+              "wins": 16,
+              "ties": 0
+            },
+            "rmse": {
+              "n": 20,
+              "mean": -0.035726054309875216,
+              "sd": 0.06931840300970576,
+              "mcse_mean": 0.01550006612214281,
+              "median": -0.013590175271505217,
+              "p10": -0.06479937279985358,
+              "p90": -0.0018581316117576173,
+              "min": -0.3106765266204423,
+              "max": 0.002654881656020125,
+              "wins": 19,
+              "ties": 0
+            },
+            "qlike": {
+              "n": 20,
+              "mean": -0.10926080815074043,
+              "sd": 0.2386858878297073,
+              "mcse_mean": 0.05337178704571152,
+              "median": -0.04057686661397228,
+              "p10": -0.13602251312730382,
+              "p90": -0.017537543516453792,
+              "min": -1.1051858516480564,
+              "max": 0.005590969907865534,
+              "wins": 19,
+              "ties": 0
+            }
+          },
+          "Nonlinear MLP minus Training mean": {
+            "mae": {
+              "n": 20,
+              "mean": -0.0351301886839821,
+              "sd": 0.016552084366295843,
+              "mcse_mean": 0.003701158581234903,
+              "median": -0.03182836957284463,
+              "p10": -0.05839971904491334,
+              "p90": -0.017590878338371665,
+              "min": -0.0732245933017997,
+              "max": -0.0030106074516770276,
+              "wins": 20,
+              "ties": 0
+            },
+            "rmse": {
+              "n": 20,
+              "mean": -0.011095582126031997,
+              "sd": 0.01216252122462974,
+              "mcse_mean": 0.0027196224236056086,
+              "median": -0.010506758376621406,
+              "p10": -0.029829114225591955,
+              "p90": 0.002199111303381377,
+              "min": -0.03884926227565033,
+              "max": 0.007472731563352375,
+              "wins": 16,
+              "ties": 0
+            },
+            "qlike": {
+              "n": 20,
+              "mean": -0.040838684094870105,
+              "sd": 0.08392649880842505,
+              "mcse_mean": 0.01876653564491935,
+              "median": -0.031049225578568873,
+              "p10": -0.06879049913158528,
+              "p90": 0.024177026032880567,
+              "min": -0.3559572277584446,
+              "max": 0.050930193673108554,
+              "wins": 15,
+              "ties": 0
+            }
+          },
+          "Expanding ridge minus Ridge": {
+            "mae": {
+              "n": 20,
+              "mean": 0.0041034634008391,
+              "sd": 0.020106058267248175,
+              "mcse_mean": 0.004495851304513855,
+              "median": -0.00020333259250443492,
+              "p10": -0.007854860454832057,
+              "p90": 0.01152418629070718,
+              "min": -0.010541664207800616,
+              "max": 0.07747723665121031,
+              "wins": 10,
+              "ties": 0
+            },
+            "rmse": {
+              "n": 20,
+              "mean": 0.005398075506583125,
+              "sd": 0.02980667129844868,
+              "mcse_mean": 0.006664974320632316,
+              "median": -0.0009617060758443929,
+              "p10": -0.005321553294412418,
+              "p90": 0.002957552561849775,
+              "min": -0.006466360641860014,
+              "max": 0.1315234708625458,
+              "wins": 13,
+              "ties": 0
+            },
+            "qlike": {
+              "n": 20,
+              "mean": -0.000586482921484005,
+              "sd": 0.026429303043841734,
+              "mcse_mean": 0.005909771820397222,
+              "median": -0.002914301464650486,
+              "p10": -0.016226130932589494,
+              "p90": 0.005498985459008524,
+              "min": -0.034019875033370284,
+              "max": 0.10283299987306757,
+              "wins": 13,
+              "ties": 0
+            }
+          }
+        },
+        "coverage": {
+          "n": 20,
+          "mean": 0.887704918032787,
+          "sd": 0.07503063209614425,
+          "mcse_mean": 0.016777359376175607,
+          "median": 0.9089253187613844,
+          "p10": 0.8364298724954463,
+          "p90": 0.9546448087431694,
+          "min": 0.6666666666666666,
+          "max": 0.9726775956284153
+        },
+        "interval_radius": {
+          "n": 20,
+          "mean": 0.8315375022476544,
+          "sd": 0.36389211597994336,
+          "mcse_mean": 0.08136875078073909,
+          "median": 0.744551152622903,
+          "p10": 0.5088305493819386,
+          "p90": 1.1889670198618545,
+          "min": 0.4830582534881269,
+          "max": 1.7777112037218887
+        },
+        "mean_interval_width": {
+          "n": 20,
+          "mean": 1.2380109019796957,
+          "sd": 0.37522738935454014,
+          "mcse_mean": 0.08390339496165326,
+          "median": 1.1644332181285928,
+          "p10": 0.8988298300059425,
+          "p90": 1.5991380235969337,
+          "min": 0.8295466913327586,
+          "max": 2.212679058364993
+        },
+        "alpha_counts": {
+          "0.01": 3,
+          "1": 1,
+          "10": 2,
+          "100": 14
+        }
+      },
+      "shift": {
+        "models": {
+          "Training mean": {
+            "mae": {
+              "n": 20,
+              "mean": 305.55213541060226,
+              "sd": 1292.667786657071,
+              "mcse_mean": 289.04930432894065,
+              "median": 10.487990661536378,
+              "p10": 4.580215648711626,
+              "p90": 38.326825166033956,
+              "min": 4.0976818336265985,
+              "max": 5796.975767029588
+            },
+            "rmse": {
+              "n": 20,
+              "mean": 892.1801783379475,
+              "sd": 3802.1184738178495,
+              "mcse_mean": 850.1795365964465,
+              "median": 23.118297879308756,
+              "p10": 10.124016582026893,
+              "p90": 99.73468022886907,
+              "min": 8.547924586695254,
+              "max": 17044.299430167444
+            },
+            "qlike": {
+              "n": 20,
+              "mean": 848.8782471596002,
+              "sd": 3621.10623359632,
+              "mcse_mean": 809.7039692069604,
+              "median": 27.10219509750597,
+              "p10": 11.726798075358843,
+              "p90": 87.79745633292268,
+              "min": 8.294104221421607,
+              "max": 16232.279052140211
+            },
+            "floor_fraction": {
+              "n": 20,
+              "mean": 0.0,
+              "sd": 0.0,
+              "mcse_mean": 0.0,
+              "median": 0.0,
+              "p10": 0.0,
+              "p90": 0.0,
+              "min": 0.0,
+              "max": 0.0
+            }
+          },
+          "Lagged square": {
+            "mae": {
+              "n": 20,
+              "mean": 343.9131665094248,
+              "sd": 1448.5546529716812,
+              "mcse_mean": 323.90666731682967,
+              "median": 12.44408242225714,
+              "p10": 6.040378343891142,
+              "p90": 45.110077176177555,
+              "min": 5.409125450660151,
+              "max": 6497.47327979438
+            },
+            "rmse": {
+              "n": 20,
+              "mean": 916.6474177257414,
+              "sd": 3892.7894828850035,
+              "mcse_mean": 870.4541905827122,
+              "median": 25.017083223800178,
+              "p10": 11.47112215905216,
+              "p90": 111.39998709169448,
+              "min": 9.921036980027278,
+              "max": 17453.650351109653
+            },
+            "qlike": {
+              "n": 20,
+              "mean": 84882.1276864405,
+              "sd": 374855.62272139685,
+              "mcse_mean": 83820.26541530581,
+              "median": 550.880942925239,
+              "p10": 143.16169681322475,
+              "p90": 3314.7340191832827,
+              "min": 51.31534806867634,
+              "max": 1677449.999390566
+            },
+            "floor_fraction": {
+              "n": 20,
+              "mean": 0.001092896174863388,
+              "sd": 0.001373291502595723,
+              "mcse_mean": 0.00030707731527268654,
+              "median": 0.0,
+              "p10": 0.0,
+              "p90": 0.0036429872495446266,
+              "min": 0.0,
+              "max": 0.0036429872495446266
+            }
+          },
+          "Ridge": {
+            "mae": {
+              "n": 20,
+              "mean": 253.1101644898647,
+              "sd": 1066.0185949748616,
+              "mcse_mean": 238.3690043642606,
+              "median": 9.283688252568975,
+              "p10": 4.269880044515306,
+              "p90": 33.77421313413828,
+              "min": 4.05326098320358,
+              "max": 4781.633040420845
+            },
+            "rmse": {
+              "n": 20,
+              "mean": 783.0897913515353,
+              "sd": 3335.563155588387,
+              "mcse_mean": 745.8545959139341,
+              "median": 20.67591093487288,
+              "p10": 9.370716695337448,
+              "p90": 90.44445436211842,
+              "min": 7.685244864970826,
+              "max": 14953.156601509669
+            },
+            "qlike": {
+              "n": 20,
+              "mean": 9543.587686074425,
+              "sd": 40038.12240365538,
+              "mcse_mean": 8952.796338603071,
+              "median": 3.8424987760203972,
+              "p10": 3.1666493449817943,
+              "p90": 1158.6074028430955,
+              "min": 2.743511684494577,
+              "max": 179296.6619634892
+            },
+            "floor_fraction": {
+              "n": 20,
+              "mean": 0.008196721311475409,
+              "sd": 0.035808622867160314,
+              "mcse_mean": 0.008007051491162388,
+              "median": 0.0,
+              "p10": 0.0,
+              "p90": 0.0003642987249544678,
+              "min": 0.0,
+              "max": 0.16029143897996356
+            }
+          },
+          "Nonlinear MLP": {
+            "mae": {
+              "n": 20,
+              "mean": 305.42108671193006,
+              "sd": 1292.6932990587213,
+              "mcse_mean": 289.0550090753766,
+              "median": 10.425183302734899,
+              "p10": 4.547942697029799,
+              "p90": 38.09361317588789,
+              "min": 3.855891264039047,
+              "max": 5796.955438400841
+            },
+            "rmse": {
+              "n": 20,
+              "mean": 892.0721984612637,
+              "sd": 3802.140573766296,
+              "mcse_mean": 850.184478295149,
+              "median": 23.067365525718397,
+              "p10": 10.075418841812358,
+              "p90": 99.71971316739157,
+              "min": 8.189106486959366,
+              "max": 17044.285721779725
+            },
+            "qlike": {
+              "n": 20,
+              "mean": 6216.214140202533,
+              "sd": 22874.207063799324,
+              "mcse_mean": 5114.828192606115,
+              "median": 19.394220716859966,
+              "p10": 9.658440229217291,
+              "p90": 2398.905236545127,
+              "min": 3.8761166980177384,
+              "max": 100953.29164974492
+            },
+            "floor_fraction": {
+              "n": 20,
+              "mean": 0.00018214936247723133,
+              "sd": 0.0008145967131146776,
+              "mcse_mean": 0.00018214936247723133,
+              "median": 0.0,
+              "p10": 0.0,
+              "p90": 0.0,
+              "min": 0.0,
+              "max": 0.0036429872495446266
+            }
+          },
+          "Expanding ridge": {
+            "mae": {
+              "n": 20,
+              "mean": 286.63074822333635,
+              "sd": 1207.7307310606416,
+              "mcse_mean": 270.05680131671113,
+              "median": 10.27105107734545,
+              "p10": 4.798497778058818,
+              "p90": 38.64554525064338,
+              "min": 4.381198429006213,
+              "max": 5417.134421496407
+            },
+            "rmse": {
+              "n": 20,
+              "mean": 738.1176149432542,
+              "sd": 3140.993489438673,
+              "mcse_mean": 702.347495926914,
+              "median": 19.411414354087903,
+              "p10": 8.748861858594857,
+              "p90": 84.5681064091712,
+              "min": 8.288444780953201,
+              "max": 14081.568809940492
+            },
+            "qlike": {
+              "n": 20,
+              "mean": 967.0090895633733,
+              "sd": 2752.940247679302,
+              "mcse_mean": 615.5761531806027,
+              "median": 3.3004015743077373,
+              "p10": 2.5578533742594067,
+              "p90": 2400.143725132092,
+              "min": 2.3836253716844102,
+              "max": 11392.046929744442
+            },
+            "floor_fraction": {
+              "n": 20,
+              "mean": 0.0012750455373406193,
+              "sd": 0.004465642033552822,
+              "mcse_mean": 0.0009985479150204505,
+              "median": 0.0,
+              "p10": 0.0,
+              "p90": 0.0018214936247723133,
+              "min": 0.0,
+              "max": 0.020036429872495445
+            }
+          }
+        },
+        "paired_differences": {
+          "Ridge minus Training mean": {
+            "mae": {
+              "n": 20,
+              "mean": -52.44197092073748,
+              "sd": 226.65285344748028,
+              "mcse_mean": 50.681118760286346,
+              "median": -1.1012715681469891,
+              "p10": -4.552612031895668,
+              "p90": -0.2243445977939789,
+              "min": -1015.3427266087429,
+              "max": 0.007390449698020163,
+              "wins": 19,
+              "ties": 0
+            },
+            "rmse": {
+              "n": 20,
+              "mean": -109.09038698641214,
+              "sd": 466.5578136531613,
+              "mcse_mean": 104.3254986762148,
+              "median": -2.442386944435878,
+              "p10": -10.30730989700034,
+              "p90": -0.83992924356056,
+              "min": -2091.1428286577757,
+              "max": -0.4387963401911126,
+              "wins": 20,
+              "ties": 0
+            },
+            "qlike": {
+              "n": 20,
+              "mean": 8694.709438914828,
+              "sd": 40406.81904749342,
+              "mcse_mean": 9035.239414472859,
+              "median": -22.452239759347215,
+              "p10": -78.459774981038,
+              "p90": 1137.5021314413211,
+              "min": -16222.868186600383,
+              "max": 179275.5088889341,
+              "wins": 18,
+              "ties": 0
+            }
+          },
+          "Nonlinear MLP minus Training mean": {
+            "mae": {
+              "n": 20,
+              "mean": -0.1310486986721912,
+              "sd": 0.11098111713098573,
+              "mcse_mean": 0.02481613221237505,
+              "median": -0.06775970387857999,
+              "p10": -0.28356381788459417,
+              "p90": -0.029777326557589218,
+              "min": -0.3430019655868577,
+              "max": -0.020328628746938193,
+              "wins": 20,
+              "ties": 0
+            },
+            "rmse": {
+              "n": 20,
+              "mean": -0.10797987668362401,
+              "sd": 0.10488346708654515,
+              "mcse_mean": 0.023452656212137678,
+              "median": -0.07113120860653144,
+              "p10": -0.2549089210734117,
+              "p90": -0.02026268602645728,
+              "min": -0.3588180997358883,
+              "max": 0.0026545262096817623,
+              "wins": 19,
+              "ties": 0
+            },
+            "qlike": {
+              "n": 20,
+              "mean": 5367.335893042933,
+              "sd": 22530.60143721386,
+              "mcse_mean": 5037.995638756464,
+              "median": -2.559194289281999,
+              "p10": -27.527594154998585,
+              "p90": 679.8205934300515,
+              "min": -64.94559562188387,
+              "max": 100881.9196739839,
+              "wins": 16,
+              "ties": 0
+            }
+          },
+          "Expanding ridge minus Ridge": {
+            "mae": {
+              "n": 20,
+              "mean": 33.52058373347162,
+              "sd": 141.71382285454249,
+              "mcse_mean": 31.688174125412026,
+              "median": 1.0202206409163548,
+              "p10": 0.44920024770890843,
+              "p90": 5.801079944023583,
+              "min": 0.09838360903980448,
+              "max": 635.5013810755627,
+              "wins": 0,
+              "ties": 0
+            },
+            "rmse": {
+              "n": 20,
+              "mean": -44.97217640828118,
+              "sd": 194.58084865723282,
+              "mcse_mean": 43.50960047171712,
+              "median": -1.1931303630272279,
+              "p10": -5.8921126949185965,
+              "p90": 1.4857943918631609,
+              "min": -871.5877915691763,
+              "max": 2.1782377784588434,
+              "wins": 16,
+              "ties": 0
+            },
+            "qlike": {
+              "n": 20,
+              "mean": -8576.578596511052,
+              "sd": 40373.08716655579,
+              "mcse_mean": 9027.696736594313,
+              "median": -0.6369701463732846,
+              "p10": -1151.8678327260136,
+              "p90": 2396.714666682813,
+              "min": -179293.4696960475,
+              "max": 11388.34322210669,
+              "wins": 15,
+              "ties": 0
+            }
+          }
+        },
+        "coverage": {
+          "n": 20,
+          "mean": 0.18387978142076505,
+          "sd": 0.09700287298371975,
+          "mcse_mean": 0.02169050180043752,
+          "median": 0.1448087431693989,
+          "p10": 0.09489981785063753,
+          "p90": 0.2928961748633881,
+          "min": 0.0273224043715847,
+          "max": 0.3879781420765027
+        },
+        "interval_radius": {
+          "n": 20,
+          "mean": 0.8315375022476544,
+          "sd": 0.36389211597994336,
+          "mcse_mean": 0.08136875078073909,
+          "median": 0.744551152622903,
+          "p10": 0.5088305493819386,
+          "p90": 1.1889670198618545,
+          "min": 0.4830582534881269,
+          "max": 1.7777112037218887
+        },
+        "mean_interval_width": {
+          "n": 20,
+          "mean": 1.6203948156101222,
+          "sd": 0.6829283725259654,
+          "mcse_mean": 0.15270742647313584,
+          "median": 1.4526867948813977,
+          "p10": 1.016073891833493,
+          "p90": 2.3063455096751677,
+          "min": 0.9650065589388,
+          "max": 3.3763820171769554
+        },
+        "alpha_counts": {
+          "0.01": 3,
+          "1": 1,
+          "10": 2,
+          "100": 14
+        }
+      }
+    },
+    "paired_coverage_shift_minus_stable": {
+      "n": 20,
+      "mean": -0.703825136612022,
+      "sd": 0.0653641233717455,
+      "mcse_mean": 0.01461586231489057,
+      "median": -0.7140255009107468,
+      "p10": -0.7836065573770491,
+      "p90": -0.6351548269581055,
+      "min": -0.8087431693989071,
+      "max": -0.5846994535519126
+    }
+  }
 }

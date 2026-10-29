@@ -82,6 +82,14 @@ Explain the objective and units, where each baseline obtains its information, wh
 
 ## Next work
 
-- Repeat the volatility forecast protocol across independently generated datasets; freeze selection and report uncertainty.
+- Completed repeated-seed evaluation: see [ML02](ML02.md) and the two repeated-seed studio cases. Further generator and shift mechanisms remain open.
 - Add feature ablations and compare likelihood-aware training objectives without tuning on the final holdout.
 - Provide a validated user-CSV forecasting adapter and compare the same causal protocol on licensed public data.
+
+## Repeated-seed evidence
+
+The original seed-73 trajectories above are preserved. Repeating their full selection, calibration and causal evaluation procedure on process seeds 100-119 gives 20 independent stable/stress pairs. Neural initialization remains fixed at 53; ridge alpha is validation-selected per dataset and frozen for its test and expanding refits.
+
+Stable mean interval coverage is 88.77% (seed SD 7.50 pp; p10-p90 83.64-95.46%), versus 18.39% (SD 9.70 pp; p10-p90 9.49-29.29%) under stress. Expanding ridge improves stress RMSE in 16/20 seeds but worsens MAE in all 20. Extreme stress paths dominate some mean errors and QLIKE; none are excluded.
+
+The studio now exposes both ensemble cases with per-seed charts and downloadable paired summaries. [The repeated-seed report](ML02.md) explains actual results, the independent sampling unit, selection boundaries, variability measures, and the limitations of this synthetic experiment.

@@ -1,14 +1,16 @@
 {
-  "task_id": "ML01",
+  "task_id": "ML02",
   "status": "completed",
-  "summary": "Added a reusable training-fitted scaler and integrated training-only model fitting. Thirteen tests pass. Measured holdout mutations leave preprocessing, training transforms, coefficients, alpha, and validation losses unchanged; a deliberately leaky full-data scaler changes coefficients. Preserved the negative holdout result versus the training-mean baseline.",
+  "summary": "Repeated the unchanged causal variance forecasting procedure on 20 independent process seeds with paired stable/stress histories, frozen validation selection, all five models, seed-level error and coverage variability, and paired baseline differences. Added two studio cases and preserved extreme paths and negative adaptation findings. All 20 tests pass; both measured artifacts regenerate and all four studio cases reproduce.",
   "evidence_paths": [
+    "src/studio.py",
     "lab.py",
-    "tests/test_lab.py",
-    "tests/test_preprocessing.py",
+    "tests/test_repeated_forecasts.py",
     "results/latest.json",
-    "reports/ML01.md",
-    "REFERENCES.md",
-    "README.md"
+    "docs/study.json",
+    "reports/ML02.md",
+    "reports/applied-study.md",
+    "README.md",
+    "REFERENCES.md"
   ]
 }
