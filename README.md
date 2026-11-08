@@ -45,6 +45,30 @@ Across these seeds, mean coverage is **88.77% (seed SD 7.50 percentage points)**
 
 Open the studio's **Repeated seeds / stable** and **Repeated seeds / stress** cases for per-seed charts, paired error differences, SD, MCSE and empirical quantiles. These measure variability for one synthetic generator, not market accuracy. Neural initialization stays fixed; different shift mechanisms and real data remain future work. [Full repeated-seed study](reports/ML02.md).
 
+## Which features matter?
+
+The **Feature ablation / stable** and **Feature ablation / stress** studio cases
+remove latest squared return, smoothed magnitude features, or signed returns
+one group at a time. Twenty new synthetic stable/stress pairs (seeds 200-219)
+retain the same train/validation/calibration/test windows. Validation selects
+each penalty and a feature variant; test scores never select the variant.
+
+Removing smoothed magnitude raises mean test RMSE by **0.015700** in stable
+histories and **5.340200** under stress relative to full ridge. Removing signed
+returns changes mean RMSE by only +0.000025 and -0.004674. These are conditional
+predictive comparisons with refitting, not causal effects or significance claims.
+
+Feature selection itself is not a uniform improvement: the validation-selected
+procedure changes mean RMSE by -0.000183 in stable histories but +0.095666 under
+stress. Its nominal 90% intervals cover only 20.92% of stress targets. All
+variants, paired differences and uncertainty summaries remain visible; no
+test-selected winner is promoted. [Methods and measured findings](reports/ML03.md).
+
+The studio method details and JSON export also include a measured isolation
+audit: changing test features or labels leaves selection and calibration radii
+unchanged, while test errors respond. Exact partition ranges are exported;
+changing excluded boundary rows leaves every recorded result unchanged.
+
 ## Run locally
 
 Use Python 3.12. From the repository root:

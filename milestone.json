@@ -1,14 +1,14 @@
 {
-  "task_id": "ML02",
+  "task_id": "ML03",
   "status": "completed",
-  "summary": "Repeated the unchanged causal variance forecasting procedure on 20 independent process seeds with paired stable/stress histories, frozen validation selection, all five models, seed-level error and coverage variability, and paired baseline differences. Added two studio cases and preserved extreme paths and negative adaptation findings. All 20 tests pass; both measured artifacts regenerate and all four studio cases reproduce.",
+  "summary": "Removed three fixed feature groups separately and refitted ridge on 20 independent synthetic stable/stress pairs. Training alone fits preprocessing and coefficients; validation selects penalties and a feature variant; calibration sets residual bands and test only evaluates frozen choices. Two studio cases preserve all removals, baselines, paired uncertainty summaries and negative findings. Exact target ranges, input validation and a measured row-perturbation audit expose selection isolation. All 32 unit tests, the trusted independent contract and six-case studio reproduction pass.",
   "evidence_paths": [
     "src/studio.py",
     "lab.py",
-    "tests/test_repeated_forecasts.py",
+    "tests/test_feature_ablation.py",
     "results/latest.json",
     "docs/study.json",
-    "reports/ML02.md",
+    "reports/ML03.md",
     "reports/applied-study.md",
     "README.md",
     "REFERENCES.md"

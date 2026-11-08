@@ -83,7 +83,7 @@ Explain the objective and units, where each baseline obtains its information, wh
 ## Next work
 
 - Completed repeated-seed evaluation: see [ML02](ML02.md) and the two repeated-seed studio cases. Further generator and shift mechanisms remain open.
-- Add feature ablations and compare likelihood-aware training objectives without tuning on the final holdout.
+- Completed feature ablations: see [ML03](ML03.md) and the feature-ablation studio cases. Likelihood-aware training objectives remain open.
 - Provide a validated user-CSV forecasting adapter and compare the same causal protocol on licensed public data.
 
 ## Repeated-seed evidence
@@ -93,3 +93,39 @@ The original seed-73 trajectories above are preserved. Repeating their full sele
 Stable mean interval coverage is 88.77% (seed SD 7.50 pp; p10-p90 83.64-95.46%), versus 18.39% (SD 9.70 pp; p10-p90 9.49-29.29%) under stress. Expanding ridge improves stress RMSE in 16/20 seeds but worsens MAE in all 20. Extreme stress paths dominate some mean errors and QLIKE; none are excluded.
 
 The studio now exposes both ensemble cases with per-seed charts and downloadable paired summaries. [The repeated-seed report](ML02.md) explains actual results, the independent sampling unit, selection boundaries, variability measures, and the limitations of this synthetic experiment.
+
+## Feature-ablation evidence
+
+Twenty additional independent stable/stress pairs (seeds 200-219) remove one
+feature group at a time from ridge: latest squared return, smoothed magnitude
+(5/20-day realized variance and 20-day mean absolute return), or signed returns
+(latest return and 5-day mean return). Each model is refitted on training only;
+validation selects its penalty and a separate validation-selected variant.
+Calibration and test targets never choose features or penalties.
+
+Removing smoothed magnitude raises mean RMSE by 0.015700 in stable histories
+(seed SD 0.012289) and 5.340200 under stress (SD 10.967745). The signed-return
+removal changes mean RMSE by +0.000025 and -0.004674, respectively. This measures
+predictive dependence within a refitted model with correlated features, not
+causal importance. Full ridge beats the feature-free training mean on RMSE in
+all 20 seeds in each regime.
+
+Validation selects the signed-return removal in 12/20 pairs, full ridge in 3,
+latest-shock removal in 4 and smoothed-magnitude removal in 1. Its mean paired
+RMSE difference from full ridge is -0.000183 in stable histories but +0.095666
+under stress. Nominal 90% interval coverage for that selection procedure is
+89.94% stable and 20.92% stressed. More selection does not establish better
+generalization or repair distribution-shift coverage.
+
+The two feature-ablation studio cases expose all model summaries, paired
+differences, per-seed RMSE changes, coverage, selection counts and exports.
+[ML03](ML03.md) records the complete method, measured results, negative findings
+and leakage checks. Likelihood-aware objectives and licensed real-data
+validation remain future work.
+
+The ablation JSON exports exact partition ranges and a deterministic isolation
+audit on stable seed 200. Separate changes to test features and test targets
+produce zero change in selection and calibration radii; changing calibration
+targets changes radii without changing point errors. Altering excluded boundary
+rows leaves the complete record unchanged. These are implementation checks,
+not extra independent datasets or a guarantee about external feature provenance.
